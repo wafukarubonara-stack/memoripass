@@ -84,8 +84,6 @@ cd memoripass
 ./gradlew assembleDebug
 ```
 
-詳細は [DEVELOPMENT.md](DEVELOPMENT.md) を参照
-
 ## 🔐 セキュリティ
 
 このプロジェクトはセキュリティを最優先事項としています。
@@ -99,39 +97,10 @@ cd memoripass
 - **コード難読化**: R8/ProGuardによる逆コンパイル対策
 - **ルート検出**: ルート化端末での警告表示
 
-### 脆弱性報告
-
-セキュリティ上の問題を発見された場合は、公開Issueではなく、[セキュリティポリシー](SECURITY.md)に従ってご報告ください。
-
-## 🤝 貢献
-
-個人開発プロジェクトですが、フィードバックやバグレポートは大歓迎です！
-
-1. このリポジトリをFork
-2. フィーチャーブランチを作成 (`git checkout -b feature/amazing-feature`)
-3. 変更をコミット (`git commit -m 'Add some amazing feature'`)
-4. ブランチにPush (`git push origin feature/amazing-feature`)
-5. Pull Requestを作成
-
-詳細は [CONTRIBUTING.md](CONTRIBUTING.md) を参照
-
-## 🤖 AI開発について
-
-このプロジェクトは、Claude (Anthropic) の支援を受けて開発されています。
-AI活用のログやプロンプト集は `docs/ai-sessions/` で公開しています。
-
-AI協働開発に興味がある方は [AI_COLLABORATION.md](AI_COLLABORATION.md) をご覧ください。
 
 ## 📄 ライセンス
 
 このプロジェクトは [Apache License 2.0](LICENSE) の下で公開されています。
-
-## 👤 作成者
-
-**[あなたの名前]**
-
-- GitHub: [@your-username](https://github.com/your-username)
-- Twitter: [@your-twitter](https://twitter.com/your-twitter) *(任意)*
 
 ## 🙏 謝辞
 
@@ -148,4 +117,4 @@ AI協働開発に興味がある方は [AI_COLLABORATION.md](AI_COLLABORATION.md
 
 ---
 
-**⚠️ 注意**: このアプリは現在開発中です。本番環境での使用は推奨されません。
+**⚠️ 注意**: このアプリは現在開発中です。本番環境での使用は推奨されません。また、作成者の学習用ドキュメントのため、これらドキュメントに基づく一切の責任は負いません。
