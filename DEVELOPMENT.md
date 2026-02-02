@@ -582,16 +582,7 @@ StrongBox unavailable on this device
 - [要件定義書](docs/requirements/SRS-v2.0.md)
 - [AI協働ガイド](AI_COLLABORATION.md)
 - [貢献ガイドライン](CONTRIBUTING.md)
-
----
-
-## サポート
-
-質問や問題がある場合:
-1. [Issue](https://github.com/wafukarubonara-stack/memoripass/issues) を検索
-2. 新しいIssueを作成
-3. [Discussions](https://github.com/wafukarubonara-stack/memoripass/discussions) で質問
-
+  
 ---
 
 **最終更新**: 2026年2月1日
