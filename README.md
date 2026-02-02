@@ -2,9 +2,10 @@
 
 **完全端末内完結型パスワード管理Androidアプリ**
 
-[![Android CI](https://github.com/[YOUR_USERNAME]/memoripass/workflows/Android%20CI/badge.svg)](https://github.com/[YOUR_USERNAME]/memoripass/actions)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Platform](https://img.shields.io/badge/Platform-Android%2015+-green.svg)](https://developer.android.com)
+
+---
 
 ## 📋 概要
 
@@ -19,19 +20,22 @@ Memoripassは、クラウド型パスワード管理の「通信傍受」「サ�
 - 📱 **スクリーンショット保護** - 画面キャプチャ完全ブロック
 - 🎯 **シンプルなUX** - セキュリティと使いやすさの両立
 
+---
+
 ## 🎯 プロジェクトステータス
 
 **現在のフェーズ**: 設計・基盤構築  
-**進捗**: 15%
+**進捗**: 20%
 
 - [x] 要件定義完了
 - [x] プロジェクト基盤構築
+- [x] ドキュメント整備
 - [ ] 設計フェーズ（進行中）
 - [ ] 実装フェーズ
 - [ ] テストフェーズ
 - [ ] リリース準備
 
-詳細な進捗は [Project Board](https://github.com/[YOUR_USERNAME]/memoripass/projects) を参照
+---
 
 ## 🔧 技術スタック
 
@@ -46,15 +50,18 @@ Memoripassは、クラウド型パスワード管理の「通信傍受」「サ�
 | ビルドツール | Gradle 8.x |
 | テスト | JUnit 4, Mockito, Espresso |
 
+---
+
 ## 📚 ドキュメント
 
 - [要件定義書](docs/requirements/SRS-v2.0.md) - 機能要件・非機能要件の詳細
-- [アーキテクチャ設計](docs/design/architecture.md) - システム設計
-- [セキュリティ設計](docs/design/security-design.md) - セキュリティ仕様
 - [開発ガイド](DEVELOPMENT.md) - 開発環境のセットアップ
 - [AI活用ガイド](AI_COLLABORATION.md) - Claudeとの協働方法
+- [セキュリティポリシー](SECURITY.md) - 脆弱性報告方法
 
-## 🚀 クイックスタート（開発者向け）
+---
+
+## 🚀 開発環境セットアップ
 
 ### 前提条件
 
@@ -68,7 +75,7 @@ Memoripassは、クラウド型パスワード管理の「通信傍受」「サ�
 
 ```bash
 # リポジトリをクローン
-git clone https://github.com/[YOUR_USERNAME]/memoripass.git
+git clone https://github.com/wafukarubonara-stack/memoripass.git
 cd memoripass
 
 # Android Studioでプロジェクトを開く
@@ -84,6 +91,10 @@ cd memoripass
 ./gradlew assembleDebug
 ```
 
+詳細は [DEVELOPMENT.md](DEVELOPMENT.md) を参照
+
+---
+
 ## 🔐 セキュリティ
 
 このプロジェクトはセキュリティを最優先事項としています。
@@ -97,24 +108,47 @@ cd memoripass
 - **コード難読化**: R8/ProGuardによる逆コンパイル対策
 - **ルート検出**: ルート化端末での警告表示
 
+### 脆弱性報告
+
+セキュリティ上の問題を発見された場合は、[SECURITY.md](SECURITY.md)に従ってご報告ください。
+
+---
+
+## 🤖 AI開発について
+
+このプロジェクトは、Claude (Anthropic) の支援を受けて開発されています。
+AI活用のログやプロンプト集は `docs/ai-sessions/` で公開しています。
+
+AI協働開発に興味がある方は [AI_COLLABORATION.md](AI_COLLABORATION.md) をご覧ください。
+
+---
 
 ## 📄 ライセンス
 
 このプロジェクトは [Apache License 2.0](LICENSE) の下で公開されています。
 
-## 🙏 謝辞
+---
 
-- [Anthropic](https://www.anthropic.com) - Claude AIによる開発支援
-- [Android Developers](https://developer.android.com) - 優れたドキュメントとライブラリ
-- [OWASP Mobile Security](https://owasp.org/www-project-mobile-security/) - セキュリティガイドライン
+## 👤 作成者
 
-## 📊 プロジェクト統計
+**wafukarubonara-stack**
 
-![GitHub stars](https://img.shields.io/github/stars/[YOUR_USERNAME]/memoripass?style=social)
-![GitHub forks](https://img.shields.io/github/forks/[YOUR_USERNAME]/memoripass?style=social)
-![GitHub issues](https://img.shields.io/github/issues/[YOUR_USERNAME]/memoripass)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/[YOUR_USERNAME]/memoripass)
+- GitHub: [@wafukarubonara-stack](https://github.com/wafukarubonara-stack)
 
 ---
 
-**⚠️ 注意**: このアプリは現在開発中です。本番環境での使用は推奨されません。また、作成者の学習用ドキュメントのため、これらドキュメントに基づく一切の責任は負いません。
+## 📊 開発ログ
+
+開発の進捗や学びは [AI Sessions](docs/ai-sessions/) で記録しています。
+
+---
+
+## ⚠️ 免責事項
+
+このアプリは現在開発中です。本番環境での使用は推奨されません。
+
+マスター認証情報（生体認証設定）を紛失すると、保存されたすべてのパスワードが完全に復元不可能になります。定期的なバックアップを強く推奨します。
+
+---
+
+**最終更新**: 2026年2月2日
