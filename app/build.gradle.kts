@@ -49,8 +49,15 @@ dependencies {
     implementation("androidx.activity:activity:1.9.3")
     implementation("androidx.constraintlayout:constraintlayout:2.2.0")
 
+    // 生体認証
+    implementation("androidx.biometric:biometric:1.1.0")
+
+    // セキュリティ
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
+
     // テスト
     testImplementation("junit:junit:4.13.2")
+    testImplementation("org.mockito:mockito-core:5.7.0")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 }
