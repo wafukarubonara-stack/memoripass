@@ -1,0 +1,312 @@
+```mermaid
+classDiagram
+    %% ============================================
+    %% Presentation Layer (UI)
+    %% ============================================
+    class MainActivity {
+        -ActivityMainBinding binding
+        -AuthenticationManager authManager
+        +onCreate()
+        +onResume()
+        +onPause()
+        -requestAuthentication()
+        -showLockScreen()
+        -showMainContent()
+    }
+
+    class BaseFragment {
+        <<abstract>>
+        #showLoading()
+        #hideLoading()
+        #showError(String)
+        #navigateTo(Fragment)
+    }
+
+    class PasswordListFragment {
+        -PasswordListViewModel viewModel
+        -PasswordListAdapter adapter
+        +onViewCreated()
+        -setupRecyclerView()
+        -observeViewModel()
+        -onPasswordClick(PasswordEntry)
+        -onAddPasswordClick()
+    }
+
+    class PasswordDetailFragment {
+        -PasswordDetailViewModel viewModel
+        -String passwordId
+        +onViewCreated()
+        -displayPassword()
+        -copyPassword()
+        -editPassword()
+        -deletePassword()
+    }
+
+    class AddPasswordFragment {
+        -AddPasswordViewModel viewModel
+        +onViewCreated()
+        -validateInput()
+        -savePassword()
+    }
+
+    class EditPasswordFragment {
+        -EditPasswordViewModel viewModel
+        -String passwordId
+        +onViewCreated()
+        -loadPassword()
+        -validateInput()
+        -updatePassword()
+    }
+
+    class BaseViewModel {
+        <<abstract>>
+        #MutableLiveData~ViewState~ viewState
+        #handleError(Exception)
+    }
+
+    class PasswordListViewModel {
+        -PasswordRepository repository
+        -LiveData~List~PasswordEntry~~ allPasswords
+        -MutableLiveData~String~ searchQuery
+        +getAllPasswords()
+        +searchPasswords(String)
+        +deletePassword(PasswordEntry)
+    }
+
+    class PasswordDetailViewModel {
+        -PasswordRepository repository
+        -GetPasswordUseCase getPasswordUseCase
+        +loadPassword(String)
+        +decryptPassword(String)
+        +deletePassword(String)
+    }
+
+    class AddPasswordViewModel {
+        -PasswordRepository repository
+        -AddPasswordUseCase addPasswordUseCase
+        +addPassword(Password)
+        +generatePassword()
+    }
+
+    class EditPasswordViewModel {
+        -PasswordRepository repository
+        -UpdatePasswordUseCase updatePasswordUseCase
+        +loadPassword(String)
+        +updatePassword(Password)
+    }
+
+    class PasswordListAdapter {
+        -List~PasswordEntry~ passwords
+        -OnItemClickListener listener
+        +onCreateViewHolder()
+        +onBindViewHolder()
+        +getItemCount()
+    }
+
+    class ViewState {
+        <<enumeration>>
+        LOADING
+        SUCCESS
+        EMPTY
+        ERROR
+        -State state
+        -String message
+    }
+
+    %% ============================================
+    %% Domain Layer (Business Logic)
+    %% ============================================
+    class Password {
+        -String id
+        -String title
+        -String username
+        -String password
+        -String url
+        -String notes
+        -String category
+        -long createdAt
+        -long updatedAt
+        +Builder builder()
+    }
+
+    class AddPasswordUseCase {
+        -PasswordRepository repository
+        +execute(Password)
+    }
+
+    class UpdatePasswordUseCase {
+        -PasswordRepository repository
+        +execute(Password)
+    }
+
+    class DeletePasswordUseCase {
+        -PasswordRepository repository
+        +execute(String)
+    }
+
+    class GetPasswordUseCase {
+        -PasswordRepository repository
+        +execute(String)
+    }
+
+    class GetAllPasswordsUseCase {
+        -PasswordRepository repository
+        +execute()
+    }
+
+    %% ============================================
+    %% Data Layer
+    %% ============================================
+    class PasswordRepository {
+        -PasswordEntryDao passwordDao
+        -CryptoManager cryptoManager
+        -LiveData~List~PasswordEntry~~ allPasswords
+        +getAllPasswords()
+        +getPasswordById(String)
+        +getPasswordsByCategory(String)
+        +searchPasswords(String)
+        +insert(PasswordEntry)
+        +update(PasswordEntry)
+        +delete(PasswordEntry)
+        +encryptPassword(String)
+        +decryptPassword(String)
+    }
+
+    class AppDatabase {
+        -static AppDatabase INSTANCE
+        +passwordEntryDao()
+        +categoryDao()
+        +getInstance(Context)
+    }
+
+    class PasswordEntryDao {
+        <<interface>>
+        +getAllPasswords()
+        +getPasswordById(String)
+        +getPasswordsByCategory(String)
+        +searchPasswords(String)
+        +insert(PasswordEntry)
+        +update(PasswordEntry)
+        +delete(PasswordEntry)
+        +deleteById(String)
+        +deleteAll()
+    }
+
+    class PasswordEntry {
+        -String id
+        -String title
+        -String username
+        -String encryptedPassword
+        -String url
+        -String notes
+        -String category
+        -long createdAt
+        -long updatedAt
+        +updateTimestamp()
+    }
+
+    class Category {
+        -String id
+        -String name
+        -int colorCode
+        -int iconResId
+    }
+
+    class CategoryDao {
+        <<interface>>
+        +getAllCategories()
+        +getCategoryById(String)
+        +insert(Category)
+        +update(Category)
+        +delete(Category)
+    }
+
+    %% ============================================
+    %% Infrastructure Layer
+    %% ============================================
+    class CryptoManager {
+        -KeyManager keyManager
+        -SecureRandom secureRandom
+        +encrypt(String)
+        +decrypt(String)
+        +isEncryptionAvailable()
+        +regenerateMasterKey()
+    }
+
+    class KeyManager {
+        -KeyStore keyStore
+        +hasMasterKey()
+        +generateMasterKey()
+        +getMasterKey()
+        +deleteMasterKey()
+        +isStrongBoxAvailable()
+    }
+
+    class AuthenticationManager {
+        -Context context
+        -BiometricManager biometricManager
+        -Handler autoLockHandler
+        -boolean isAuthenticated
+        +isBiometricAvailable()
+        +authenticate(FragmentActivity, Callback)
+        +lock()
+        +startAutoLock()
+        +stopAutoLock()
+        +isAuthenticated()
+    }
+
+    %% ============================================
+    %% Relationships
+    %% ============================================
+    
+    %% Presentation -> Domain
+    MainActivity --> AuthenticationManager
+    PasswordListFragment --|> BaseFragment
+    PasswordDetailFragment --|> BaseFragment
+    AddPasswordFragment --|> BaseFragment
+    EditPasswordFragment --|> BaseFragment
+    
+    PasswordListFragment --> PasswordListViewModel
+    PasswordDetailFragment --> PasswordDetailViewModel
+    AddPasswordFragment --> AddPasswordViewModel
+    EditPasswordFragment --> EditPasswordViewModel
+    
+    PasswordListViewModel --|> BaseViewModel
+    PasswordDetailViewModel --|> BaseViewModel
+    AddPasswordViewModel --|> BaseViewModel
+    EditPasswordViewModel --|> BaseViewModel
+    
+    PasswordListFragment --> PasswordListAdapter
+    BaseViewModel --> ViewState
+    
+    %% Domain -> Data
+    PasswordListViewModel --> PasswordRepository
+    PasswordDetailViewModel --> GetPasswordUseCase
+    AddPasswordViewModel --> AddPasswordUseCase
+    EditPasswordViewModel --> UpdatePasswordUseCase
+    
+    GetPasswordUseCase --> PasswordRepository
+    AddPasswordUseCase --> PasswordRepository
+    UpdatePasswordUseCase --> PasswordRepository
+    DeletePasswordUseCase --> PasswordRepository
+    GetAllPasswordsUseCase --> PasswordRepository
+    
+    AddPasswordUseCase --> Password
+    UpdatePasswordUseCase --> Password
+    
+    %% Data -> Infrastructure
+    PasswordRepository --> PasswordEntryDao
+    PasswordRepository --> CryptoManager
+    AppDatabase --> PasswordEntryDao
+    AppDatabase --> CategoryDao
+    PasswordEntryDao --> PasswordEntry
+    CategoryDao --> Category
+    
+    CryptoManager --> KeyManager
+    
+    %% Notes
+    note for MainActivity "エントリーポイント\n生体認証とナビゲーション管理"
+    note for PasswordRepository "データアクセスと暗号化の統合\nSingle Source of Truth"
+    note for CryptoManager "AES-256-GCM暗号化\nNIST SP 800-38D準拠"
+    note for KeyManager "AndroidKeyStore + StrongBox\nTitan M2チップによる鍵保護"
+```
