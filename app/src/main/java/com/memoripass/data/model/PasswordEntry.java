@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.memoripass.data;
+package com.memoripass.data.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
