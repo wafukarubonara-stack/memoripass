@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.memoripass;
 
 import android.os.Bundle;
@@ -24,9 +25,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.memoripass.auth.AuthenticationManager;
-import com.memoripass.crypto.CryptoManager;
-import com.memoripass.data.model.PasswordEntry;
-import com.memoripass.data.repository.PasswordRepository;
 import com.memoripass.databinding.ActivityMainBinding;
 import com.memoripass.ui.list.PasswordListFragment;
 
@@ -110,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         if (authManager != null) {
             authManager.cleanup();
         }
+
         binding = null;
     }
 
@@ -185,7 +184,8 @@ public class MainActivity extends AppCompatActivity {
      * ロック画面を表示
      */
     private void showLockScreen() {
-        // メインコンテンツを非表示
+        // TODO: 実際のロック画面UIを実装
+        // 現在は仮実装として、メインコンテンツを非表示
         if (binding != null && binding.getRoot() != null) {
             binding.getRoot().setVisibility(View.INVISIBLE);
         }
@@ -195,128 +195,10 @@ public class MainActivity extends AppCompatActivity {
      * メインコンテンツを表示
      */
     private void showMainContent() {
-        // メインコンテンツを表示
+        // TODO: 実際のメインコンテンツUIを実装
+        // 現在は仮実装として、メインコンテンツを表示
         if (binding != null && binding.getRoot() != null) {
             binding.getRoot().setVisibility(View.VISIBLE);
-        }
-
-        // パスワード一覧画面を表示
-        showPasswordList();
-    }
-
-    /**
-     * パスワード一覧画面を表示
-     */
-    private void showPasswordList() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(android.R.id.content, PasswordListFragment.newInstance())
-                .commit();
-
-        Log.d(TAG, "PasswordListFragment displayed");
-
-        // テストデータを追加（開発用 - 本番では削除）
-        addTestData();
-    }
-
-    /**
-     * テストデータを追加（開発用）
-     */
-    // MainActivity.java の addTestData() メソッドを以下に置き換え
-
-    /**
-     * テストデータを追加（開発用 - 修正版）
-     */
-    private void addTestData() {
-        Log.d(TAG, "==== Adding test data (fixed version) ====");
-
-        // UIスレッドで暗号化処理を実行してからバックグラウンドで保存
-        try {
-            PasswordRepository repository = new PasswordRepository(this);
-
-            // メインスレッドで暗号化を実行
-            Log.d(TAG, "Encrypting passwords on main thread...");
-
-            String encryptedPass1 = repository.encryptPassword("TestPassword123!");
-            String encryptedPass2 = repository.encryptPassword("SecurePass456!");
-            String encryptedPass3 = repository.encryptPassword("GitHubToken789!");
-
-            Log.d(TAG, "Encryption completed successfully");
-
-            // バックグラウンドスレッドでデータベース保存
-            new Thread(() -> {
-                try {
-                    // テストデータ1: Gmail
-                    PasswordEntry entry1 = new PasswordEntry(
-                            java.util.UUID.randomUUID().toString(),
-                            "Gmail",
-                            encryptedPass1
-                    );
-                    entry1.setUsername("test@gmail.com");
-                    entry1.setUrl("https://gmail.com");
-                    entry1.setCategory("仕事");
-                    entry1.setNotes("メインのメールアカウント");
-                    repository.insert(entry1);
-                    Log.d(TAG, "Entry 1 inserted: Gmail");
-
-                    // テストデータ2: Amazon
-                    PasswordEntry entry2 = new PasswordEntry(
-                            java.util.UUID.randomUUID().toString(),
-                            "Amazon",
-                            encryptedPass2
-                    );
-                    entry2.setUsername("user@example.com");
-                    entry2.setUrl("https://amazon.co.jp");
-                    entry2.setCategory("ショッピング");
-                    repository.insert(entry2);
-                    Log.d(TAG, "Entry 2 inserted: Amazon");
-
-                    // テストデータ3: GitHub
-                    PasswordEntry entry3 = new PasswordEntry(
-                            java.util.UUID.randomUUID().toString(),
-                            "GitHub",
-                            encryptedPass3
-                    );
-                    entry3.setUsername("developer123");
-                    entry3.setUrl("https://github.com");
-                    entry3.setCategory("開発");
-                    repository.insert(entry3);
-                    Log.d(TAG, "Entry 3 inserted: GitHub");
-
-                    Log.i(TAG, "✅ Test data added successfully (3 entries)");
-
-                    // UIスレッドでトースト表示
-                    runOnUiThread(() -> {
-                        Toast.makeText(
-                                MainActivity.this,
-                                "テストデータを3件追加しました",
-                                Toast.LENGTH_SHORT
-                        ).show();
-                    });
-
-                } catch (Exception e) {
-                    Log.e(TAG, "❌ Failed to save test data to database", e);
-                    e.printStackTrace();
-
-                    runOnUiThread(() -> {
-                        Toast.makeText(
-                                MainActivity.this,
-                                "データ保存に失敗: " + e.getMessage(),
-                                Toast.LENGTH_LONG
-                        ).show();
-                    });
-                }
-            }).start();
-
-        } catch (Exception e) {
-            Log.e(TAG, "❌ Failed to encrypt test data", e);
-            e.printStackTrace();
-
-            Toast.makeText(
-                    this,
-                    "暗号化に失敗: " + e.getMessage(),
-                    Toast.LENGTH_LONG
-            ).show();
         }
     }
 }
