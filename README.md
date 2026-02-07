@@ -1,154 +1,337 @@
-# 🔐 Memoripass
+# Memoripass
 
 **完全端末内完結型パスワード管理Androidアプリ**
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Platform](https://img.shields.io/badge/Platform-Android%2015+-green.svg)](https://developer.android.com)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![Android](https://img.shields.io/badge/Platform-Android%2015+-green.svg)](https://developer.android.com)
+[![Build](https://img.shields.io/badge/Build-Passing-brightgreen.svg)](https://github.com/wafukarubonara-stack/memoripass)
+
+Memoripassは、セキュリティとプライバシーを最優先に設計された、完全端末内完結型のパスワード管理アプリです。すべてのデータは端末内で暗号化され、外部サーバーとの通信は一切行いません。
 
 ---
 
-## 📋 概要
+## ✨ 主な特徴
 
-Memoripassは、クラウド型パスワード管理の「通信傍受」「サーバー漏洩」リスクを完全に排除する、端末内完結型の高セキュリティパスワード管理アプリです。
+### 🔐 セキュリティ
 
-### 主な特徴
+- **AES-256-GCM暗号化** - NIST SP 800-38D準拠の強力な暗号化
+- **生体認証** - 指紋・顔認証による安全なアクセス
+- **オートロック** - 30秒のアイドル後に自動ロック
+- **ハードウェアセキュリティ** - Android KeyStore + StrongBox（Titan M2）対応
+- **スクリーンショット防止** - FLAG_SECUREによる画面録画防止
 
-- 🔒 **完全オフライン動作** - インターネット権限なし、通信傍受のリスクゼロ
-- 🛡️ **ハードウェアセキュリティ** - Pixel 9のTitan M2チップ（StrongBox）で鍵を保護
-- 🔐 **AES-256-GCM暗号化** - 軍事グレードの暗号化
-- 👆 **生体認証** - 指紋・顔認証でセキュアなアクセス
-- 📱 **スクリーンショット保護** - 画面キャプチャ完全ブロック
-- 🎯 **シンプルなUX** - セキュリティと使いやすさの両立
+### 🎯 機能
 
----
+- ✅ パスワードの追加・編集・削除
+- ✅ パスワード詳細表示とコピー
+- ✅ セキュアなパスワード生成（8〜128文字）
+- ✅ パスワード強度チェック
+- ✅ カテゴリ別管理
+- ✅ 検索機能
+- ✅ 完全オフライン動作
 
-## 🎯 プロジェクトステータス
+### 🏗️ アーキテクチャ
 
-**現在のフェーズ**: 設計・基盤構築  
-**進捗**: 20%
-
-- [x] 要件定義完了
-- [x] プロジェクト基盤構築
-- [x] ドキュメント整備
-- [ ] 設計フェーズ（進行中）
-- [ ] 実装フェーズ
-- [ ] テストフェーズ
-- [ ] リリース準備
-
----
-
-## 🔧 技術スタック
-
-| カテゴリ | 技術 |
-|---------|------|
-| 言語 | Java (JDK 17) |
-| プラットフォーム | Android 15+ (API Level 35+) |
-| ターゲットデバイス | Google Pixel 9シリーズ |
-| 暗号化 | AES-256-GCM |
-| 鍵管理 | AndroidKeyStore (StrongBox) |
-| 認証 | BiometricPrompt API |
-| ビルドツール | Gradle 8.x |
-| テスト | JUnit 4, Mockito, Espresso |
+- **Clean Architecture** - レイヤー分離による保守性
+- **MVVM + Repository Pattern** - テスタブルな設計
+- **Room Database** - 高速なローカルストレージ
+- **LiveData** - リアクティブなUI更新
 
 ---
 
-## 📚 ドキュメント
+## 📱 システム要件
 
-- [要件定義書](docs/requirements/SRS-v2.0.md) - 機能要件・非機能要件の詳細
-- [開発ガイド](DEVELOPMENT.md) - 開発環境のセットアップ
-- [AI活用ガイド](AI_COLLABORATION.md) - Claudeとの協働方法
-- [セキュリティポリシー](SECURITY.md) - 脆弱性報告方法
+- **OS**: Android 15 (API Level 35) 以上
+- **ストレージ**: 50MB以上の空き容量
+- **セキュリティ**: 生体認証（指紋/顔認証）またはデバイスロック設定済み
+- **推奨**: Google Pixel 9以降（Titan M2 StrongBox対応）
 
 ---
 
-## 🚀 開発環境セットアップ
+## 🚀 インストール
 
-### 前提条件
-
-- Ubuntu Linux 22.04+ または macOS
-- Android Studio Koala | 2024.1.1+
-- JDK 17
-- Git
-- Google Pixel 9 または Android 15+のエミュレータ
-
-### セットアップ
+### 開発版ビルド
 
 ```bash
 # リポジトリをクローン
 git clone https://github.com/wafukarubonara-stack/memoripass.git
 cd memoripass
 
-# Android Studioでプロジェクトを開く
-# File > Open > memoripassディレクトリを選択
-
-# 依存関係を同期
+# ビルド
 ./gradlew build
 
-# テスト実行
-./gradlew test
-
-# APKビルド
-./gradlew assembleDebug
+# デバイスにインストール
+./gradlew installDebug
 ```
 
-詳細は [DEVELOPMENT.md](DEVELOPMENT.md) を参照
+### リリース版（準備中）
+
+Google Play Storeでの公開を予定しています。
 
 ---
 
-## 🔐 セキュリティ
+## 📖 使用方法
 
-このプロジェクトはセキュリティを最優先事項としています。
+### 初回起動
 
-### セキュリティ機能
+1. アプリを起動
+2. 生体認証を実行
+3. 認証成功後、パスワード一覧画面が表示されます
 
-- **ハードウェアバックド鍵**: Titan M2チップ内で鍵生成・保管
-- **認証付き暗号**: AES-256-GCMで改ざん検出
-- **メモリ保護**: センシティブデータの即座なゼロクリア
-- **画面保護**: FLAG_SECUREによるキャプチャ防止
-- **コード難読化**: R8/ProGuardによる逆コンパイル対策
-- **ルート検出**: ルート化端末での警告表示
+### パスワードの追加
 
-### 脆弱性報告
+1. 右下の「+」ボタンをタップ
+2. 必要な情報を入力
+   - **タイトル** (必須): サービス名など
+   - **ユーザー名**: メールアドレスやIDなど
+   - **パスワード** (必須): 手動入力または生成
+   - **URL**: Webサイトのアドレス
+   - **カテゴリ**: 分類用
+   - **メモ**: 追加情報
+3. 「保存」をタップ
 
-セキュリティ上の問題を発見された場合は、[SECURITY.md](SECURITY.md)に従ってご報告ください。
+### パスワードの表示
+
+1. 一覧からエントリをタップ
+2. 詳細画面が表示されます
+3. 「パスワードをコピー」でクリップボードにコピー
+
+### パスワードの編集
+
+1. 詳細画面で「編集」をタップ
+2. 情報を変更
+3. 「保存」をタップ
+
+### パスワードの削除
+
+1. 一覧画面でエントリを長押し
+2. 削除確認ダイアログで「削除」をタップ
 
 ---
 
-## 🤖 AI開発について
+## 🏛️ アーキテクチャ
 
-このプロジェクトは、Claude (Anthropic) の支援を受けて開発されています。
-AI活用のログやプロンプト集は `docs/ai-sessions/` で公開しています。
+```
+┌─────────────────────────────────────────┐
+│         Presentation Layer              │
+│  ┌─────────────────────────────────┐   │
+│  │ Activity / Fragment             │   │
+│  │  - MainActivity                 │   │
+│  │  - PasswordListFragment         │   │
+│  │  - AddPasswordFragment          │   │
+│  │  - PasswordDetailFragment       │   │
+│  │  - EditPasswordFragment         │   │
+│  └──────────────┬──────────────────┘   │
+│                 │                       │
+│  ┌──────────────▼──────────────────┐   │
+│  │ ViewModel                       │   │
+│  │  - PasswordListViewModel        │   │
+│  │  - AddPasswordViewModel         │   │
+│  │  - PasswordDetailViewModel      │   │
+│  │  - EditPasswordViewModel        │   │
+│  └──────────────┬──────────────────┘   │
+└─────────────────┼───────────────────────┘
+                  │
+┌─────────────────▼───────────────────────┐
+│          Domain Layer                   │
+│  ┌─────────────────────────────────┐   │
+│  │ Use Cases                       │   │
+│  │  - AddPasswordUseCase           │   │
+│  │  - UpdatePasswordUseCase        │   │
+│  │  - DeletePasswordUseCase        │   │
+│  │  - GetPasswordUseCase           │   │
+│  │  - GetAllPasswordsUseCase       │   │
+│  └──────────────┬──────────────────┘   │
+│                 │                       │
+│  ┌──────────────▼──────────────────┐   │
+│  │ Domain Models                   │   │
+│  │  - Password (decrypted)         │   │
+│  └─────────────────────────────────┘   │
+└─────────────────┼───────────────────────┘
+                  │
+┌─────────────────▼───────────────────────┐
+│           Data Layer                    │
+│  ┌─────────────────────────────────┐   │
+│  │ Repository                      │   │
+│  │  - PasswordRepository           │   │
+│  │  - CategoryRepository           │   │
+│  └──────────────┬──────────────────┘   │
+│                 │                       │
+│  ┌──────────────▼──────────────────┐   │
+│  │ Data Access Object (DAO)        │   │
+│  │  - PasswordEntryDao             │   │
+│  │  - CategoryDao                  │   │
+│  └──────────────┬──────────────────┘   │
+│                 │                       │
+│  ┌──────────────▼──────────────────┐   │
+│  │ Room Database                   │   │
+│  │  - AppDatabase                  │   │
+│  └──────────────┬──────────────────┘   │
+│                 │                       │
+│  ┌──────────────▼──────────────────┐   │
+│  │ Data Models                     │   │
+│  │  - PasswordEntry (encrypted)    │   │
+│  │  - Category                     │   │
+│  └─────────────────────────────────┘   │
+└─────────────────┼───────────────────────┘
+                  │
+┌─────────────────▼───────────────────────┐
+│      Infrastructure Layer               │
+│  ┌─────────────────────────────────┐   │
+│  │ Security                        │   │
+│  │  - CryptoManager (AES-256-GCM)  │   │
+│  │  - KeyManager (KeyStore)        │   │
+│  │  - AuthenticationManager        │   │
+│  └─────────────────────────────────┘   │
+│  ┌─────────────────────────────────┐   │
+│  │ Utilities                       │   │
+│  │  - PasswordGenerator            │   │
+│  │  - PasswordStrengthChecker      │   │
+│  │  - ValidationUtils              │   │
+│  └─────────────────────────────────┘   │
+└─────────────────────────────────────────┘
+```
 
-AI協働開発に興味がある方は [AI_COLLABORATION.md](AI_COLLABORATION.md) をご覧ください。
+---
+
+## 🔒 セキュリティ仕様
+
+### 暗号化
+
+- **アルゴリズム**: AES-256-GCM
+- **鍵長**: 256ビット
+- **IV長**: 12バイト（96ビット）
+- **認証タグ**: 128ビット
+- **鍵管理**: Android KeyStore（ハードウェアバックド）
+- **準拠規格**: NIST SP 800-38D
+
+### 認証
+
+- **生体認証**: BiometricPrompt API
+- **強度**: BIOMETRIC_STRONG + DEVICE_CREDENTIAL
+- **オートロック**: 30秒（変更可能）
+- **セッション管理**: メモリ内のみ保持
+
+### データ保護
+
+- **ストレージ**: 端末内のみ（外部バックアップ無効）
+- **画面保護**: FLAG_SECURE（スクリーンショット防止）
+- **メモリ**: 使用後にゼロクリア
+- **ログ**: 機密情報の出力禁止
+
+---
+
+## 🧪 テスト
+
+### 実行済みテスト
+
+- ✅ TC001: 初回起動時の生体認証
+- ✅ TC004: オートロック（30秒）
+- ✅ TC101: データベース初期化
+- ✅ TC201: パスワード一覧画面の表示
+
+### テストの実行
+
+```bash
+# 単体テスト
+./gradlew test
+
+# UIテスト
+./gradlew connectedAndroidTest
+```
+
+---
+
+## 📊 実装状況
+
+| フェーズ | 内容 | 状態 |
+|---------|------|------|
+| Phase 1 | データ層（Database, DAO, Repository） | ✅ 完了 |
+| Phase 2 | ドメイン層（UseCase, Domain Model） | ✅ 完了 |
+| Phase 3 | UI基礎（ViewModel, Fragment, Adapter） | ✅ 完了 |
+| Phase 4 | UI拡張（Add/Detail/Edit画面） | ✅ 完了 |
+| Phase 5 | ユーティリティ（Generator, Checker） | 🔄 進行中 |
+| Phase 6 | UI/UX改善 | 📋 予定 |
+
+---
+
+## 🛣️ ロードマップ
+
+### v1.0（現在開発中）
+
+- ✅ 基本的なパスワード管理機能
+- ✅ AES-256-GCM暗号化
+- ✅ 生体認証
+- 🔄 パスワード生成機能
+- 📋 検索機能の強化
+
+### v1.1（予定）
+
+- カテゴリ管理UI
+- パスワード履歴
+- エクスポート/インポート（暗号化済み）
+- ダークモード
+
+### v2.0（将来）
+
+- 自動入力サービス
+- ブラウザ拡張機能連携
+- 2要素認証コード管理
+- 安全なパスワード共有
+
+---
+
+## 🤝 コントリビューション
+
+現在、このプロジェクトは個人開発中です。フィードバックやバグ報告は歓迎します！
+
+### 報告方法
+
+1. [Issues](https://github.com/wafukarubonara-stack/memoripass/issues)でバグ報告
+2. セキュリティ上の問題は非公開で報告してください
 
 ---
 
 ## 📄 ライセンス
 
-このプロジェクトは [Apache License 2.0](LICENSE) の下で公開されています。
+```
+Copyright 2026 wafukarubonara-stack
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
 
 ---
 
-## 👤 作成者
+## 🙏 謝辞
 
-**wafukarubonara-stack**
+- [Android Jetpack](https://developer.android.com/jetpack)
+- [Room Persistence Library](https://developer.android.com/training/data-storage/room)
+- [Material Components for Android](https://github.com/material-components/material-components-android)
+
+---
+
+## 📮 連絡先
 
 - GitHub: [@wafukarubonara-stack](https://github.com/wafukarubonara-stack)
+- リポジトリ: [memoripass](https://github.com/wafukarubonara-stack/memoripass)
 
 ---
 
-## 📊 開発ログ
+**⚠️ 重要な注意事項**
 
-開発の進捗や学びは [AI Sessions](docs/ai-sessions/) で記録しています。
+このアプリはパスワードを安全に管理しますが、完全な安全性を保証するものではありません。以下の点にご注意ください：
 
----
-
-## ⚠️ 免責事項
-
-このアプリは現在開発中です。本番環境での使用は推奨されません。
-
-マスター認証情報（生体認証設定）を紛失すると、保存されたすべてのパスワードが完全に復元不可能になります。定期的なバックアップを強く推奨します。
-
----
-
-**最終更新**: 2026年2月2日
+- 端末の紛失・盗難に備えて、重要なパスワードは別途バックアップしてください
+- 定期的にパスワードを変更してください
+- 信頼できないアプリや改造版は使用しないでください
+- 端末のOSとセキュリティパッチを最新の状態に保ってください
