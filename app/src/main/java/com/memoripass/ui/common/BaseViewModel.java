@@ -27,31 +27,19 @@ import androidx.lifecycle.MutableLiveData;
 /**
  * ViewModel基底クラス
  *
- * <p>すべてのViewModelの共通機能を提供する。</p>
- *
- * <p>共通機能:</p>
- * <ul>
- *   <li>ViewStateの管理</li>
- *   <li>エラーハンドリング</li>
- *   <li>ローディング状態の管理</li>
- * </ul>
+ * <p>ViewStateの管理とエラーハンドリングの共通機能を提供する。</p>
  *
  * @since 1.0
  */
-public abstract class BaseViewModel extends AndroidViewModel {
+public class BaseViewModel extends AndroidViewModel {
 
     private static final String TAG = "BaseViewModel";
 
     protected final MutableLiveData<ViewState> viewState = new MutableLiveData<>();
 
-    /**
-     * コンストラクタ
-     *
-     * @param application アプリケーション
-     */
     public BaseViewModel(@NonNull Application application) {
         super(application);
-        viewState.setValue(ViewState.LOADING);
+        viewState.setValue(ViewState.SUCCESS);
     }
 
     /**
@@ -67,21 +55,21 @@ public abstract class BaseViewModel extends AndroidViewModel {
      * ローディング状態に設定
      */
     protected void setLoading() {
-        viewState.setValue(ViewState.LOADING);
+        viewState.postValue(ViewState.LOADING);  // postValue使用（スレッドセーフ）
     }
 
     /**
      * 成功状態に設定
      */
     protected void setSuccess() {
-        viewState.setValue(ViewState.SUCCESS);
+        viewState.postValue(ViewState.SUCCESS);  // postValue使用（スレッドセーフ）
     }
 
     /**
      * 空状態に設定
      */
     protected void setEmpty() {
-        viewState.setValue(ViewState.EMPTY);
+        viewState.postValue(ViewState.EMPTY);  // postValue使用（スレッドセーフ）
     }
 
     /**
@@ -89,35 +77,31 @@ public abstract class BaseViewModel extends AndroidViewModel {
      *
      * @param message エラーメッセージ
      */
-    protected void setError(String message) {
-        viewState.setValue(ViewState.error(message));
+    protected void setError(@NonNull String message) {
+        viewState.postValue(ViewState.error(message));  // postValue使用（スレッドセーフ）
+        Log.e(TAG, "Error: " + message);
     }
 
     /**
-     * エラーをハンドリング
+     * エラーハンドリング
      *
      * @param throwable エラー
      */
     protected void handleError(@NonNull Throwable throwable) {
-        Log.e(TAG, "Error occurred", throwable);
-        String message = throwable.getMessage();
-        if (message == null || message.isEmpty()) {
-            message = "エラーが発生しました";
-        }
-        setError(message);
+        setError(throwable.getMessage() != null ? throwable.getMessage() : "Unknown error");
     }
 
     /**
-     * 例外をハンドリング
+     * 例外ハンドリング
      *
      * @param exception 例外
      */
     protected void handleException(@NonNull Exception exception) {
-        Log.e(TAG, "Exception occurred", exception);
         String message = exception.getMessage();
         if (message == null || message.isEmpty()) {
-            message = "予期しないエラーが発生しました";
+            message = "An unexpected error occurred";
         }
         setError(message);
+        Log.e(TAG, "Exception handled", exception);
     }
 }

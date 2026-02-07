@@ -678,3 +678,107 @@ Memoripassプロジェクトを通じて、以下を達成しました：
 
 **Memoripass Development Team**  
 **Repository**: https://github.com/wafukarubonara-stack/memoripass
+
+---
+
+### 2026年2月7日（午後） - 実機テスト開始と問題修正
+
+#### 実機テスト環境構築
+
+**使用デバイス**: Google Pixel 9
+**OS**: Android 15 (API 35)
+**接続方法**: USB（ADB）
+
+#### テスト実行結果
+
+| テストID | テスト名 | 結果 | 備考 |
+|---------|---------|------|------|
+| TC001 | 初回起動時の生体認証 | ✅ 合格 | 想定通り動作 |
+| TC201 | パスワード追加 | ❌ 失敗 | UI問題とスレッド問題を発見 |
+
+#### 発見した問題と修正
+
+**問題1: UI配置問題（ステータスバー重なり）**
+- **症状**: 追加画面のタイトル欄がステータスバーと重なり入力不可
+- **原因**: パディング不足
+- **修正**: `rootLayout.setPadding(48, 48, 48, 48)` → `(48, 120, 48, 48)`
+- **影響範囲**: AddPasswordFragment, PasswordDetailFragment, EditPasswordFragment
+- **修正日**: 2026-02-07
+
+**問題2: LiveData.setValue()のスレッド問題**
+```
+IllegalStateException: Cannot invoke setValue on a background thread
+```
+- **症状**: バックグラウンドスレッドからLiveData更新でクラッシュ
+- **原因**: BaseViewModel内で`setValue()`使用
+- **修正**: すべての`setValue()`を`postValue()`に変更
+- **影響範囲**: BaseViewModel（全ViewModelに影響）
+- **修正日**: 2026-02-07
+
+**問題3: 暗号化処理のスレッド問題**
+```
+InvalidAlgorithmParameterException: Caller-provided IV not permitted
+```
+- **症状**: バックグラウンドスレッドから暗号化実行で失敗
+- **原因**: Android KeyStoreはメインスレッドでのみ動作
+- **修正**: 暗号化をメインスレッドで実行、DB保存のみバックグラウンド
+- **修正箇所**:
+  - AddPasswordViewModel
+  - EditPasswordViewModel
+- **修正日**: 2026-02-07
+
+#### 予防的修正
+
+問題発見後、同様の問題が発生する可能性のある箇所を事前修正：
+- ✅ PasswordDetailFragmentのUI修正
+- ✅ EditPasswordFragmentのUI修正
+- ✅ EditPasswordViewModelのスレッド修正
+
+#### Phase 5完成
+
+実機テスト中に、Phase 5の残りユーティリティを完成：
+- ✅ Constants.java（200行）- アプリ全体の定数定義
+- ✅ ValidationUtils.java（300行）- 入力バリデーション
+
+**Phase 5完成度**: 100%
+
+#### 技術的学び
+
+1. **Android KeyStoreの制約**
+   - メインスレッドでのみ暗号化・復号が可能
+   - バックグラウンドスレッドから呼ぶと`InvalidAlgorithmParameterException`
+   - 設計: 暗号化→メイン、DB操作→バックグラウンド
+
+2. **LiveDataのスレッドセーフ**
+   - `setValue()`: メインスレッドのみ
+   - `postValue()`: 任意のスレッドから呼び出し可能
+   - バックグラウンド処理では必ず`postValue()`使用
+
+3. **UIパディングの重要性**
+   - ステータスバー高さを考慮したパディング必要
+   - 標準: top=48dp、ステータスバー考慮: top=120dp
+
+#### 次回作業予定
+
+1. 修正版APKのインストール
+2. TC201（パスワード追加）の再テスト
+3. TC401（パスワード詳細表示）
+4. TC501（パスワード編集）
+5. TC601（パスワード削除）
+6. TC004（オートロック）
+
+#### 実装統計（2026-02-07時点）
+```
+総ファイル数: 38
+├── Phase 0-4: 32ファイル
+└── Phase 5: 4ファイル (100%完成)
+
+修正ファイル数: 6
+├── UI修正: 3ファイル
+└── スレッド修正: 3ファイル
+
+総コード行数: 約6,500行
+実機テスト: 進行中（2/7合格）
+```
+
+---

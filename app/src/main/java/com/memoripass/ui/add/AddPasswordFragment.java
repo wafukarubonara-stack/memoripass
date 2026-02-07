@@ -76,7 +76,8 @@ public class AddPasswordFragment extends BaseFragment {
     private View createLayout() {
         LinearLayout rootLayout = new LinearLayout(requireContext());
         rootLayout.setOrientation(LinearLayout.VERTICAL);
-        rootLayout.setPadding(48, 48, 48, 48);
+        // パディングを増やしてステータスバーと重ならないように
+        rootLayout.setPadding(48, 120, 48, 48);  // top: 48→120に変更
 
         // ScrollView
         ScrollView scrollView = new ScrollView(requireContext());
