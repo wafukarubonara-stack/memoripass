@@ -50,3 +50,31 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# Backup files
+*.backup
+*.old
+*.error
+*.tmp
+*~
+
+# Local properties
+local.properties
+
+# Build directories
+build/
+.gradle/
+
+# IDE files
+.idea/
+*.iml
+*.iws
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test logs
+test-logs/
+*.log
+
