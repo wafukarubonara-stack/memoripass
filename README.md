@@ -327,6 +327,32 @@ limitations under the License.
 
 ---
 
+## 📖 ドキュメント
+
+プロジェクトの詳細なドキュメントは[docs/](docs/)ディレクトリに整理されています。
+
+### 主要ドキュメント
+
+| カテゴリ | ドキュメント | 内容 |
+|---------|-------------|------|
+| 📋 **プロジェクト管理** | [CHANGELOG](docs/project/CHANGELOG.md) | バージョン履歴と変更内容 |
+| | [SECURITY](docs/project/SECURITY.md) | セキュリティポリシー |
+| 💻 **開発記録** | [開発日誌](docs/development/DEVELOPMENT_JOURNAL.md) | 日別の詳細な開発記録 |
+| | [AI協働](docs/development/AI_COLLABORATION.md) | Claudeとの協働記録 |
+| | [開発ガイド](docs/development/DEVELOPMENT.md) | 環境構築・ビルド方法 |
+| 🏗️ **アーキテクチャ** | [アーキテクチャ概要](docs/architecture/ARCHITECTURE.md) | システム設計と実装状況 |
+| 🧪 **テスト** | [テスト計画](docs/testing/TESTING.md) | テストケースと実行結果 |
+
+**📚 すべてのドキュメントを見る**: [docs/README.md](docs/README.md)
+
+### ドキュメントの使い方
+
+- **開発の経緯を知りたい** → [開発日誌](docs/development/DEVELOPMENT_JOURNAL.md)
+- **システム設計を理解したい** → [アーキテクチャ概要](docs/architecture/ARCHITECTURE.md)
+- **開発に参加したい** → [開発ガイド](docs/development/DEVELOPMENT.md)
+- **問題解決方法を探したい** → [開発日誌の「問題と解決」](docs/development/DEVELOPMENT_JOURNAL.md)
+---
+
 **⚠️ 重要な注意事項**
 
 このアプリはパスワードを安全に管理しますが、完全な安全性を保証するものではありません。以下の点にご注意ください：
