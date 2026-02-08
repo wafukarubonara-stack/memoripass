@@ -1,5 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Primary Colors (Blue) -->
+    <color name="primary">#1976D2</color>
+    <color name="primary_dark">#1565C0</color>
+    <color name="primary_light">#42A5F5</color>
+    <color name="primary_container">#BBDEFB</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="on_primary_container">#001D35</color>
+
+    <!-- Secondary Colors (Green) -->
+    <color name="secondary">#388E3C</color>
+    <color name="secondary_dark">#2E7D32</color>
+    <color name="secondary_light">#66BB6A</color>
+    <color name="secondary_container">#C8E6C9</color>
+    <color name="on_secondary">#FFFFFF</color>
+    <color name="on_secondary_container">#002106</color>
+
+    <!-- Tertiary Colors (Orange) -->
+    <color name="tertiary">#FF6F00</color>
+    <color name="tertiary_dark">#E65100</color>
+    <color name="tertiary_light">#FF9800</color>
+    <color name="tertiary_container">#FFE0B2</color>
+    <color name="on_tertiary">#FFFFFF</color>
+    <color name="on_tertiary_container">#2B1700</color>
+
+    <!-- Error Colors -->
+    <color name="error">#D32F2F</color>
+    <color name="error_container">#FFCDD2</color>
+    <color name="on_error">#FFFFFF</color>
+    <color name="on_error_container">#410E0B</color>
+
+    <!-- Background Colors (Light Theme) -->
+    <color name="background">#FAFAFA</color>
+    <color name="on_background">#1A1C1E</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_variant">#E7E0EC</color>
+    <color name="on_surface">#1A1C1E</color>
+    <color name="on_surface_variant">#49454F</color>
+
+    <!-- Outline Colors -->
+    <color name="outline">#79747E</color>
+    <color name="outline_variant">#CAC4D0</color>
+
+    <!-- Dark Theme Colors -->
+    <color name="background_dark">#1A1C1E</color>
+    <color name="on_background_dark">#E2E2E6</color>
+    <color name="surface_dark">#1A1C1E</color>
+    <color name="surface_variant_dark">#49454F</color>
+    <color name="on_surface_dark">#E2E2E6</color>
+    <color name="on_surface_variant_dark">#CAC4D0</color>
+
+    <!-- Additional UI Colors -->
+    <color name="divider">#E0E0E0</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="ripple">#1976D233</color>
+
+    <!-- Status Colors -->
+    <color name="success">#4CAF50</color>
+    <color name="warning">#FF9800</color>
+    <color name="info">#2196F3</color>
+
+    <!-- Password Strength Colors -->
+    <color name="strength_very_weak">#F44336</color>
+    <color name="strength_weak">#FF9800</color>
+    <color name="strength_moderate">#FFC107</color>
+    <color name="strength_strong">#8BC34A</color>
+    <color name="strength_very_strong">#4CAF50</color>
+
+    <!-- Category Colors -->
+    <color name="category_work">#1976D2</color>
+    <color name="category_personal">#9C27B0</color>
+    <color name="category_finance">#388E3C</color>
+    <color name="category_social">#FF5722</color>
+    <color name="category_shopping">#FF9800</color>
+    <color name="category_other">#607D8B</color>
+
+    <!-- Legacy Colors (for backward compatibility) -->
+    <color name="colorPrimary">#1976D2</color>
+    <color name="colorPrimaryDark">#1565C0</color>
+    <color name="colorAccent">#388E3C</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="text_tertiary">#9E9E9E</color>
+    <color name="text_disabled">#BDBDBD</color>
+    <color name="text_hint">#9E9E9E</color>
+
+    <!-- Common Colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
 </resources>
