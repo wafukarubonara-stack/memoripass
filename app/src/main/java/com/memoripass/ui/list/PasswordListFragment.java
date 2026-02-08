@@ -78,6 +78,7 @@ public class PasswordListFragment extends BaseFragment {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
         ));
+        recyclerView.setPadding(16, 120, 16, 16);  // ← この行を追加
         frameLayout.addView(recyclerView);
 
         // FloatingActionButton

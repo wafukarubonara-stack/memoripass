@@ -114,30 +114,30 @@ public class CryptoManager {
      * @throws CryptoException 暗号化に失敗
      */
     @NonNull
-    public String encrypt(@NonNull String plaintext) throws CryptoException {
+
+
+public String encrypt(@NonNull String plaintext) throws CryptoException {
         if (plaintext == null || plaintext.isEmpty()) {
-            throw new CryptoException("Plaintext cannot be null or empty");
+            throw new IllegalArgumentException("Plaintext cannot be null or empty");
         }
 
         try {
-            // マスター鍵を取得
+            // マスターキーを取得
             SecretKey masterKey = keyManager.getMasterKey();
 
-            // ランダムIVを生成
-            byte[] iv = new byte[IV_SIZE_BYTES];
-            secureRandom.nextBytes(iv);
-
-            // Cipherを初期化
+            // Cipherを初期化（IVは自動生成される - Android KeyStore要件）
             Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-            GCMParameterSpec spec = new GCMParameterSpec(AUTH_TAG_SIZE_BITS, iv);
-            cipher.init(Cipher.ENCRYPT_MODE, masterKey, spec);
+            cipher.init(Cipher.ENCRYPT_MODE, masterKey);
+
+            // 自動生成されたIVを取得
+            byte[] iv = cipher.getIV();
 
             // 暗号化
             byte[] plaintextBytes = plaintext.getBytes(StandardCharsets.UTF_8);
             byte[] ciphertext = cipher.doFinal(plaintextBytes);
 
             // IV + 暗号文を結合
-            ByteBuffer buffer = ByteBuffer.allocate(IV_SIZE_BYTES + ciphertext.length);
+            ByteBuffer buffer = ByteBuffer.allocate(iv.length + ciphertext.length);
             buffer.put(iv);
             buffer.put(ciphertext);
 
@@ -145,17 +145,18 @@ public class CryptoManager {
             String encoded = Base64.encodeToString(buffer.array(), Base64.NO_WRAP);
 
             Log.d(TAG, "Encryption successful");
-            Log.d(TAG, "IV size: " + iv.length + " bytes");
-            Log.d(TAG, "Ciphertext size: " + ciphertext.length + " bytes");
-
-            // センシティブデータをクリア
-            Arrays.fill(plaintextBytes, (byte) 0);
-
             return encoded;
 
-        } catch (KeyStoreException | NoSuchAlgorithmException | NoSuchPaddingException |
-                 InvalidKeyException | InvalidAlgorithmParameterException |
-                 IllegalBlockSizeException | BadPaddingException e) {
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+            Log.e(TAG, "Encryption algorithm not available", e);
+            throw new CryptoException("Encryption failed", e);
+        } catch (InvalidKeyException e) {
+            Log.e(TAG, "Invalid key for encryption", e);
+            throw new CryptoException("Encryption failed", e);
+        } catch (IllegalBlockSizeException | BadPaddingException e) {
+            Log.e(TAG, "Encryption processing error", e);
+            throw new CryptoException("Encryption failed", e);
+        } catch (Exception e) {
             Log.e(TAG, "Encryption failed", e);
             throw new CryptoException("Encryption failed", e);
         }

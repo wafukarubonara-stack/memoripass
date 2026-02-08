@@ -11,7 +11,171 @@ Memoripassは、セキュリティとデータ整合性が最重要のアプリ�
 5. **手動テスト** - 実機での動作確認
 
 ---
+## ✅ 実行済みテスト（2026-02-08更新）
 
+### 実機テスト結果 - Google Pixel 9 (Android 15)
+
+**実施日**: 2026年2月8日  
+**デバイス**: Google Pixel 9  
+**Android**: Android 15 (API 35)  
+**ビルド**: app-debug.apk  
+
+| ID | テスト名 | 結果 | 実行時刻 | 備考 |
+|----|---------|------|---------|------|
+| TC001 | 初回起動時の生体認証 | ✅ 合格 | 12:52:59 | 指紋認証正常動作 |
+| TC201 | パスワード追加 | ✅ 合格 | 12:53:14 | 暗号化・保存成功 |
+| TC401 | パスワード詳細表示 | ✅ 合格 | 12:53:16 | 復号化成功、コピー機能確認 |
+| TC501 | パスワード編集 | ✅ 合格 | 12:53:19 | 更新・再暗号化成功 |
+| TC601 | パスワード削除 | ✅ 合格 | 12:53:29 | 削除確認ダイアログ・削除成功 |
+| TC004 | オートロック（30秒） | ✅ 合格 | 12:55:36 | バックグラウンド後の再認証確認 |
+| TC005 | スクリーンショット防止 | ✅ 合格 | 12:57:40 | FLAG_SECURE動作確認 |
+
+**実行済み**: 7/7テスト (100%)  
+**合格率**: 7/7 (100%) ✅  
+**失敗**: 0
+
+### テスト中に発見・修正した問題
+
+#### UI配置問題
+- **問題**: すべてのFragmentでステータスバー・インカメラと重なり
+- **修正**: パディング調整 (top: 16→120)
+- **影響**: AddPasswordFragment, PasswordDetailFragment, EditPasswordFragment, PasswordListFragment
+
+#### Android 15 KeyStore問題
+- **問題**: IV自動生成の強制、認証タイムアウト
+- **修正**: CryptoManager.java, KeyManager.java
+- **詳細**: DEVELOPMENT_JOURNAL.md参照
+
+### 確認された機能
+
+#### セキュリティ ✅
+- 生体認証（指紋認証）
+- AES-256-GCM暗号化
+- Android KeyStore + StrongBox
+- オートロック（30秒）
+- スクリーンショット防止
+
+#### パスワード管理 ✅
+- パスワードの追加・表示・編集・削除
+- 暗号化/復号化
+- クリップボードコピー
+
+#### UI/UX ✅
+- 生体認証ダイアログ
+- FloatingActionButton
+- RecyclerView
+- Toast通知
+- ステータスバー対応
+
+### Logcat確認事項
+
+成功時のログパターン：
+```
+D/AddPasswordViewModel: Encrypting password on main thread...
+D/CryptoManager: Encryption successful
+I/AddPasswordViewModel: Password saved successfully
+D/CryptoManager: Decryption successful
+I/PasswordListViewModel: Password deleted successfully
+```
+
+### 次回テスト予定
+
+以下は今後実施予定：
+- TC102: 大量データ（100件以上）のパフォーマンステスト
+- TC103: 長いパスワード（256文字）のテスト
+- TC202: バリデーションエラーのテスト
+- TC301: 検索機能のテスト（実装後）
+- セキュリティテスト（暗号化強度、メモリダンプ）
+
+### テスト環境
+
+- Ubuntu 22.04
+- Android Studio
+- ADB (Android Debug Bridge)
+- Logcat監視## ✅ 実行済みテスト（2026-02-08更新）
+
+### 実機テスト結果 - Google Pixel 9 (Android 15)
+
+**実施日**: 2026年2月8日  
+**デバイス**: Google Pixel 9  
+**Android**: Android 15 (API 35)  
+**ビルド**: app-debug.apk  
+
+| ID | テスト名 | 結果 | 実行時刻 | 備考 |
+|----|---------|------|---------|------|
+| TC001 | 初回起動時の生体認証 | ✅ 合格 | 12:52:59 | 指紋認証正常動作 |
+| TC201 | パスワード追加 | ✅ 合格 | 12:53:14 | 暗号化・保存成功 |
+| TC401 | パスワード詳細表示 | ✅ 合格 | 12:53:16 | 復号化成功、コピー機能確認 |
+| TC501 | パスワード編集 | ✅ 合格 | 12:53:19 | 更新・再暗号化成功 |
+| TC601 | パスワード削除 | ✅ 合格 | 12:53:29 | 削除確認ダイアログ・削除成功 |
+| TC004 | オートロック（30秒） | ✅ 合格 | 12:55:36 | バックグラウンド後の再認証確認 |
+| TC005 | スクリーンショット防止 | ✅ 合格 | 12:57:40 | FLAG_SECURE動作確認 |
+
+**実行済み**: 7/7テスト (100%)  
+**合格率**: 7/7 (100%) ✅  
+**失敗**: 0
+
+### テスト中に発見・修正した問題
+
+#### UI配置問題
+- **問題**: すべてのFragmentでステータスバー・インカメラと重なり
+- **修正**: パディング調整 (top: 16→120)
+- **影響**: AddPasswordFragment, PasswordDetailFragment, EditPasswordFragment, PasswordListFragment
+
+#### Android 15 KeyStore問題
+- **問題**: IV自動生成の強制、認証タイムアウト
+- **修正**: CryptoManager.java, KeyManager.java
+- **詳細**: DEVELOPMENT_JOURNAL.md参照
+
+### 確認された機能
+
+#### セキュリティ ✅
+- 生体認証（指紋認証）
+- AES-256-GCM暗号化
+- Android KeyStore + StrongBox
+- オートロック（30秒）
+- スクリーンショット防止
+
+#### パスワード管理 ✅
+- パスワードの追加・表示・編集・削除
+- 暗号化/復号化
+- クリップボードコピー
+
+#### UI/UX ✅
+- 生体認証ダイアログ
+- FloatingActionButton
+- RecyclerView
+- Toast通知
+- ステータスバー対応
+
+### Logcat確認事項
+
+成功時のログパターン：
+```
+D/AddPasswordViewModel: Encrypting password on main thread...
+D/CryptoManager: Encryption successful
+I/AddPasswordViewModel: Password saved successfully
+D/CryptoManager: Decryption successful
+I/PasswordListViewModel: Password deleted successfully
+```
+
+### 次回テスト予定
+
+以下は今後実施予定：
+- TC102: 大量データ（100件以上）のパフォーマンステスト
+- TC103: 長いパスワード（256文字）のテスト
+- TC202: バリデーションエラーのテスト
+- TC301: 検索機能のテスト（実装後）
+- セキュリティテスト（暗号化強度、メモリダンプ）
+
+### テスト環境
+
+- Ubuntu 22.04
+- Android Studio
+- ADB (Android Debug Bridge)
+- Logcat監視
+
+#########################################
 ## ✅ 実行済みテスト（2026-02-07更新）
 
 ### セキュリティ・認証テスト

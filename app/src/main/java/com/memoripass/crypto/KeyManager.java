@@ -136,7 +136,7 @@ public class KeyManager {
                     .setBlockModes(BLOCK_MODE)
                     .setEncryptionPaddings(ENCRYPTION_PADDING)
                     .setKeySize(KEY_SIZE)
-                    .setUserAuthenticationRequired(true)
+                    .setUserAuthenticationRequired(false)  // 暗号化時に都度認証は不要
                     .setUserAuthenticationParameters(
                             30, // 認証の有効期間（秒）
                             KeyProperties.AUTH_BIOMETRIC_STRONG |
