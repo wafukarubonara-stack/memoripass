@@ -34,6 +34,7 @@ import com.memoripass.data.model.PasswordEntry;
 import com.memoripass.ui.add.AddPasswordFragment;
 import com.memoripass.ui.common.BaseFragment;
 import com.memoripass.ui.detail.PasswordDetailFragment;
+import com.memoripass.R;
 
 /**
  * パスワード一覧Fragment
@@ -59,43 +60,22 @@ public class PasswordListFragment extends BaseFragment {
     private PasswordListAdapter adapter;
     private RecyclerView recyclerView;
     private FloatingActionButton fab;
+    private View emptyStateView;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        // FrameLayout（RecyclerView + FAB）
-        FrameLayout frameLayout = new FrameLayout(requireContext());
-        frameLayout.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-        ));
-
-        // RecyclerView
-        recyclerView = new RecyclerView(requireContext());
-        recyclerView.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-        ));
-        recyclerView.setPadding(16, 120, 16, 16);  // ← この行を追加
-        frameLayout.addView(recyclerView);
-
-        // FloatingActionButton
-        fab = new FloatingActionButton(requireContext());
-        fab.setImageResource(android.R.drawable.ic_input_add);
+        // XMLレイアウトをインフレート
+        View view = inflater.inflate(R.layout.fragment_password_list, container, false);
         
-        FrameLayout.LayoutParams fabParams = new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-        );
-        fabParams.gravity = Gravity.BOTTOM | Gravity.END;
-        fabParams.setMargins(0, 0, 48, 48);
-        fab.setLayoutParams(fabParams);
+        // ビューの取得
+        recyclerView = view.findViewById(R.id.recycler_view);
+        fab = view.findViewById(R.id.fab_add);
+        emptyStateView = view.findViewById(R.id.empty_state);
         
-        frameLayout.addView(fab);
-
-        return frameLayout;
+        return view;
     }
 
     @Override

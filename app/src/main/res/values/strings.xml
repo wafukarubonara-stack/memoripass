@@ -1,3 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- App Name -->
     <string name="app_name">Memoripass</string>
+    
+    <!-- Password List -->
+    <string name="add_password">パスワードを追加</string>
+    <string name="password_icon">パスワードアイコン</string>
+    <string name="view_details">詳細を表示</string>
+    
+    <!-- Empty State -->
+    <string name="empty_state_description">空の状態</string>
+    <string name="empty_state_title">パスワードがありません</string>
+    <string name="empty_state_message">右下の + ボタンをタップして\n最初のパスワードを追加しましょう</string>
+    
+    <!-- Password Actions -->
+    <string name="save">保存</string>
+    <string name="cancel">キャンセル</string>
+    <string name="edit">編集</string>
+    <string name="delete">削除</string>
+    <string name="copy">コピー</string>
+    
+    <!-- Fields -->
+    <string name="title">タイトル</string>
+    <string name="username">ユーザー名</string>
+    <string name="password">パスワード</string>
+    <string name="url">URL</string>
+    <string name="notes">メモ</string>
+    <string name="category">カテゴリ</string>
+    
+    <!-- Messages -->
+    <string name="password_saved">パスワードを保存しました</string>
+    <string name="password_updated">パスワードを更新しました</string>
+    <string name="password_deleted">パスワードを削除しました</string>
+    <string name="password_copied">パスワードをコピーしました</string>
+    <string name="delete_confirmation">このパスワードを削除しますか？</string>
+    
+    <!-- Authentication -->
+    <string name="auth_title">Memoripass</string>
+    <string name="auth_subtitle">生体認証でロックを解除</string>
+    <string name="auth_cancel">キャンセル</string>
+    <string name="auth_success">認証に成功しました</string>
+    <string name="auth_failed">認証に失敗しました</string>
 </resources>
