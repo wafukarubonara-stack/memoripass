@@ -27,29 +27,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.memoripass.R;
 import com.memoripass.data.model.PasswordEntry;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * パスワード一覧アダプター
  *
  * <p>RecyclerViewでパスワードエントリを表示するためのアダプター。</p>
- *
- * <p>表示内容:</p>
- * <ul>
- *   <li>タイトル</li>
- *   <li>ユーザー名</li>
- *   <li>更新日時</li>
- * </ul>
- *
- * <p>セキュリティ:</p>
- * <ul>
- *   <li>パスワードは表示しない（暗号化されたまま）</li>
- *   <li>タイトルとユーザー名のみ表示</li>
- * </ul>
  *
  * @since 1.0
  */
@@ -58,34 +42,16 @@ public class PasswordListAdapter extends RecyclerView.Adapter<PasswordListAdapte
     private List<PasswordEntry> passwords = new ArrayList<>();
     private OnItemClickListener listener;
 
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat(
-            "yyyy/MM/dd HH:mm",
-            Locale.getDefault()
-    );
-
     /**
      * アイテムクリックリスナー
      */
     public interface OnItemClickListener {
-        /**
-         * アイテムがクリックされた
-         *
-         * @param passwordEntry クリックされたパスワードエントリ
-         */
         void onItemClick(PasswordEntry passwordEntry);
-
-        /**
-         * アイテムが長押しされた
-         *
-         * @param passwordEntry 長押しされたパスワードエントリ
-         */
         void onItemLongClick(PasswordEntry passwordEntry);
     }
 
     /**
      * リスナーを設定
-     *
-     * @param listener リスナー
      */
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
@@ -93,8 +59,6 @@ public class PasswordListAdapter extends RecyclerView.Adapter<PasswordListAdapte
 
     /**
      * データを設定
-     *
-     * @param passwords パスワードリスト
      */
     public void setPasswords(List<PasswordEntry> passwords) {
         this.passwords = passwords != null ? passwords : new ArrayList<>();
@@ -104,8 +68,9 @@ public class PasswordListAdapter extends RecyclerView.Adapter<PasswordListAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // item_password.xmlを使用
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(android.R.layout.simple_list_item_2, parent, false);
+                .inflate(R.layout.item_password, parent, false);
         return new ViewHolder(view);
     }
 
@@ -126,12 +91,14 @@ public class PasswordListAdapter extends RecyclerView.Adapter<PasswordListAdapte
     class ViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView titleTextView;
-        private final TextView subtitleTextView;
+        private final TextView usernameTextView;
+        private final TextView categoryTextView;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            titleTextView = itemView.findViewById(android.R.id.text1);
-            subtitleTextView = itemView.findViewById(android.R.id.text2);
+            titleTextView = itemView.findViewById(R.id.title);
+            usernameTextView = itemView.findViewById(R.id.username);
+            categoryTextView = itemView.findViewById(R.id.category);
 
             // クリックリスナー
             itemView.setOnClickListener(v -> {
@@ -156,17 +123,22 @@ public class PasswordListAdapter extends RecyclerView.Adapter<PasswordListAdapte
             // タイトル
             titleTextView.setText(entry.getTitle());
 
-            // サブタイトル（ユーザー名 + 更新日時）
-            StringBuilder subtitle = new StringBuilder();
-
+            // ユーザー名
             if (entry.getUsername() != null && !entry.getUsername().isEmpty()) {
-                subtitle.append(entry.getUsername());
-                subtitle.append(" • ");
+                usernameTextView.setText(entry.getUsername());
+                usernameTextView.setVisibility(View.VISIBLE);
+            } else {
+                usernameTextView.setText("ユーザー名未設定");
+                usernameTextView.setVisibility(View.VISIBLE);
             }
 
-            subtitle.append(dateFormat.format(new Date(entry.getUpdatedAt())));
-
-            subtitleTextView.setText(subtitle.toString());
+            // カテゴリバッジ
+            if (entry.getCategory() != null && !entry.getCategory().isEmpty()) {
+                categoryTextView.setText(entry.getCategory());
+                categoryTextView.setVisibility(View.VISIBLE);
+            } else {
+                categoryTextView.setVisibility(View.GONE);
+            }
         }
     }
 }
