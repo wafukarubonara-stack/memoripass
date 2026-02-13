@@ -1,21 +1,105 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# Memoripass ProGuard Rules
+# Generated for v1.0 release
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# ============================================================
+# 基本設定
+# ============================================================
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# デバッグ用にスタックトレースの行番号を保持
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# アノテーションを保持
+-keepattributes *Annotation*
+
+# ============================================================
+# Android基本クラス
+# ============================================================
+
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+-keep public class * extends androidx.fragment.app.Fragment
+
+# ============================================================
+# Room Database
+# ============================================================
+
+# Roomエンティティを保持
+-keep class * extends androidx.room.RoomDatabase
+-keep @androidx.room.Entity class *
+-keep @androidx.room.Dao interface *
+-dontwarn androidx.room.paging.**
+
+# Room生成クラスを保持
+-keep class **_Impl { *; }
+-keep class **_Impl$* { *; }
+
+# ============================================================
+# Biometric Authentication
+# ============================================================
+
+-keep class androidx.biometric.** { *; }
+-dontwarn androidx.biometric.**
+
+# ============================================================
+# Security / Crypto
+# ============================================================
+
+-keep class androidx.security.crypto.** { *; }
+-keep class javax.crypto.** { *; }
+-keep class java.security.** { *; }
+-dontwarn androidx.security.crypto.**
+
+# ============================================================
+# ViewModel / LiveData
+# ============================================================
+
+-keep class * extends androidx.lifecycle.ViewModel {
+    <init>();
+}
+-keep class * extends androidx.lifecycle.AndroidViewModel {
+    <init>(android.app.Application);
+}
+-keepclassmembers class * extends androidx.lifecycle.ViewModel {
+    <init>(...);
+}
+
+# ============================================================
+# Material Design Components
+# ============================================================
+
+-keep class com.google.android.material.** { *; }
+-dontwarn com.google.android.material.**
+
+# ============================================================
+# Memoripassアプリ固有
+# ============================================================
+
+# データモデルを保持（暗号化/復号化で使用）
+-keep class com.memoripass.data.model.** { *; }
+-keep class com.memoripass.domain.model.** { *; }
+
+# セキュリティクラスを保持
+-keep class com.memoripass.infrastructure.security.** { *; }
+
+# ViewModelを保持
+-keep class com.memoripass.ui.**.** extends androidx.lifecycle.ViewModel { *; }
+
+# ============================================================
+# 警告を無視（既知の問題）
+# ============================================================
+
+-dontwarn kotlin.**
+-dontwarn kotlinx.**
+-dontwarn org.jetbrains.**
+
+
+# ============================================================
+# 自動生成された警告抑制ルール
+# ============================================================
+
+-dontwarn javax.annotation.Nullable
+-dontwarn javax.annotation.concurrent.GuardedBy
