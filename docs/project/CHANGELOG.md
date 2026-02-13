@@ -9,10 +9,109 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Phase 5 - In Progress
-- パスワード生成機能の統合
-- パスワード強度表示の追加
+### 今後の予定
+- パスワード生成UIの統合
 - 検索機能の強化
+- ダークモード対応
+
+---
+
+## [1.0.0] - 2026-02-14
+
+### v1.0.0 - Initial Release
+
+#### Added
+- **ProGuardルール**: リリースビルド用の難読化・最適化ルール
+  - Room Database保護
+  - Biometric認証クラス保護
+  - セキュリティ/暗号化クラス保護
+  - ViewModel/LiveData保護
+
+#### Changed
+- **リリースビルド設定**: minify・shrinkResources有効化を確認
+
+#### Fixed
+- なし
+
+---
+
+## [0.6.0] - 2026-02-12〜14
+
+### Phase 6 - UI/UX Improvement
+
+#### Added
+- **Material Design 3 カラーパレット** (`colors.xml`)
+  - プライマリカラー: Blue (#1976D2)
+  - セカンダリカラー: Green (#388E3C)
+  - アクセントカラー: Orange (#FF6F00)
+  - パスワード強度カラー（5段階）
+  - カテゴリカラー（6種類）
+
+- **Material Design 3 テーマ** (`themes.xml`)
+  - ライト/ダークテーマ対応
+  - コンポーネントスタイル定義
+  - Typography設定
+
+- **XMLレイアウト** (4画面)
+  - `fragment_password_list.xml`: MaterialToolbar、RecyclerView、Empty State、FAB
+  - `fragment_add_password.xml`: TextInputLayout、パスワード表示切替、MaterialButton
+  - `fragment_password_detail.xml`: MaterialCardView（セクション分け）、コピーボタン
+  - `fragment_edit_password.xml`: TextInputLayout、既存データ表示対応
+
+- **RecyclerViewアイテムレイアウト** (`item_password.xml`)
+  - MaterialCardViewによるカード形式
+  - カテゴリバッジ表示
+
+- **Drawableリソース**
+  - `circle_background.xml`: アイコン背景
+  - `category_badge_background.xml`: カテゴリバッジ背景
+
+#### Changed
+- **PasswordListFragment**: プログラマティック → XMLレイアウト
+- **PasswordListAdapter**: `simple_list_item_2` → `item_password.xml`
+- **AddPasswordFragment**: プログラマティック → XMLレイアウト、EditText → TextInputEditText
+- **PasswordDetailFragment**: プログラマティック → XMLレイアウト
+- **EditPasswordFragment**: プログラマティック → XMLレイアウト
+
+#### Fixed
+- **ステータスバー重なり**: 全FragmentにfitsSystemWindows="true"を追加
+- **全角スペース混入**: fragment_add_password.xmlの全角スペースを修正
+
+---
+
+## [0.5.0] - 2026-02-07〜08
+
+### Phase 5 - Utilities & Device Testing
+
+#### Added
+- **PasswordGenerator**: パスワード生成ユーティリティ
+  - 文字種別設定（大文字、小文字、数字、記号）
+  - 長さ指定（8〜128文字）
+  - セキュアランダム生成
+
+- **PasswordStrengthChecker**: パスワード強度チェッカー
+  - 5段階評価（Very Weak〜Very Strong）
+  - 長さ、文字種別、パターンの評価
+
+- **Constants**: アプリ定数管理
+  - セキュリティ定数
+  - UI定数
+  - データベース定数
+
+- **ValidationUtils**: バリデーションユーティリティ
+  - タイトル、ユーザー名、パスワード、URL、メモの検証
+
+#### Changed
+- **CryptoManager**: Android 15対応（IV自動生成）
+- **KeyManager**: 認証要件の調整
+- **BaseViewModel**: LiveData postValue対応
+- **AddPasswordViewModel**: メインスレッド暗号化対応
+- **EditPasswordViewModel**: メインスレッド暗号化対応
+
+#### Fixed
+- **Android 15 IV生成エラー**: `InvalidAlgorithmParameterException`を修正
+- **UserNotAuthenticatedException**: KeyStore認証要件を調整
+- **UI配置問題**: 全FragmentのステータスバーPadding修正
 
 ---
 
@@ -22,25 +121,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Added
 - **AddPasswordFragment**: パスワード追加画面の実装
-  - タイトル、ユーザー名、パスワード、URL、カテゴリ、メモの入力
-  - バリデーション機能
-  - 暗号化処理の統合
-  
 - **PasswordDetailFragment**: パスワード詳細画面の実装
-  - パスワード情報の表示
-  - クリップボードへのコピー機能
-  - 編集画面への遷移
-  
 - **EditPasswordFragment**: パスワード編集画面の実装
-  - 既存パスワードの編集
-  - 更新日時の自動設定
-  
 - **FloatingActionButton**: パスワード一覧画面に追加ボタンを配置
 
 #### Changed
-- PasswordListFragmentの更新
-  - 詳細画面への遷移機能を追加
-  - FABによる追加画面への遷移
+- PasswordListFragmentの更新（詳細画面への遷移、FAB追加）
 
 #### Fixed
 - なし
@@ -53,33 +139,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Added
 - **BaseViewModel**: ViewModel基底クラス
-  - ViewState管理
-  - エラーハンドリング
-  
 - **BaseFragment**: Fragment基底クラス
-  - 共通UI処理
-  - ナビゲーション機能
-  
 - **ViewState**: UI状態管理クラス
-  - Loading, Success, Empty, Error状態
-  
 - **PasswordListViewModel**: パスワード一覧画面のViewModel
-  - LiveDataによるリアクティブなデータ監視
-  - 検索・フィルタ機能
-  - 削除機能
-  
 - **PasswordListAdapter**: RecyclerViewアダプター
-  - パスワードエントリの一覧表示
-  - クリック・長押しリスナー
-  
 - **PasswordListFragment**: パスワード一覧画面
-  - RecyclerViewによる一覧表示
-  - 削除確認ダイアログ
 
 #### Changed
-- MainActivityの更新
-  - 認証成功後にPasswordListFragmentを表示
-  - activity_main.xmlからHello World TextViewを削除
+- MainActivityの更新（認証成功後にPasswordListFragmentを表示）
 
 #### Fixed
 - なし
@@ -92,25 +159,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Added
 - **Password**: ドメインモデル（復号済みパスワード）
-  - Builderパターンによる構築
-  - バリデーション機能
-  
 - **AddPasswordUseCase**: パスワード追加のビジネスロジック
-  - 入力バリデーション
-  - 暗号化処理
-  
 - **UpdatePasswordUseCase**: パスワード更新のビジネスロジック
-  - 更新日時の自動設定
-  
 - **DeletePasswordUseCase**: パスワード削除のビジネスロジック
-  
 - **GetPasswordUseCase**: パスワード取得・復号のビジネスロジック
-  - LiveData変換
-  - 自動復号
-  
 - **GetAllPasswordsUseCase**: パスワード一覧取得のビジネスロジック
-  - カテゴリフィルタ
-  - 検索機能
 
 #### Changed
 - なし
@@ -126,28 +179,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Added
 - **Category**: カテゴリエンティティ
-  - ID、名前、色コード、アイコン、作成日時
-  
 - **PasswordEntry**: パスワードエンティティ（暗号化済み）
-  - ID、タイトル、ユーザー名、暗号化パスワード、URL、メモ、カテゴリ、作成日時、更新日時
-  
 - **AppDatabase**: Room データベース
-  - シングルトンパターン
-  - password_entriesテーブル
-  - categoriesテーブル
-  
 - **PasswordEntryDao**: パスワードエントリDAO
-  - CRUD操作
-  - 検索・フィルタクエリ
-  - LiveDataサポート
-  
 - **CategoryDao**: カテゴリDAO
-  - CRUD操作
-  
 - **PasswordRepository**: パスワードリポジトリ
-  - データアクセスの抽象化
-  - 暗号化・復号処理の統合
-  - バックグラウンドスレッドでの実行
 
 #### Changed
 - なし
@@ -162,30 +198,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Phase 0 - Project Foundation
 
 #### Added
-- プロジェクトの初期化
-  - Android Studio プロジェクト作成
-  - Clean Architecture + MVVM パターンの採用
-  
-- **CryptoManager**: 暗号化マネージャー
-  - AES-256-GCM暗号化
-  - NIST SP 800-38D準拠
-  - IV自動生成
-  - 認証タグ検証
-  
-- **KeyManager**: 鍵管理マネージャー
-  - Android KeyStore統合
-  - StrongBox対応（Titan M2）
-  - ハードウェアバックド鍵
-  
-- **AuthenticationManager**: 認証マネージャー
-  - BiometricPrompt統合
-  - 生体認証（指紋・顔認証）
-  - オートロック機能（30秒）
-  
-- **MainActivity**: メインアクティビティ
-  - FLAG_SECURE（スクリーンショット防止）
-  - 初回起動時の生体認証
-  - バックグラウンド復帰時の再認証
+- プロジェクトの初期化（Clean Architecture + MVVM）
+- **CryptoManager**: AES-256-GCM暗号化
+- **KeyManager**: Android KeyStore + StrongBox対応
+- **AuthenticationManager**: BiometricPrompt統合
+- **MainActivity**: FLAG_SECURE、生体認証、オートロック
 
 #### Changed
 - なし
@@ -198,43 +215,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 既知の問題
 
 ### セキュリティ
-- なし（現時点で報告なし）
+- なし
 
 ### 機能
-- 暗号化処理のスレッド安全性の改善が必要（Phase 5で対応予定）
-- テストデータ追加時のエラーハンドリング強化（Phase 5で対応予定）
+- パスワード生成UIは未統合（次バージョンで対応予定）
+- 検索機能は基本実装のみ（次バージョンで強化予定）
 
 ### UI/UX
-- レイアウトXMLの作成（Phase 6で対応予定）
-- アニメーション・トランジション（Phase 6で対応予定）
-- ダークモード対応（Phase 6で対応予定）
+- ダークモード対応は次バージョン予定
+- アニメーション・トランジションは次バージョン予定
 
 ---
 
-## 今後の予定
-
-### v0.5.0 - Phase 5 (進行中)
-- ✅ PasswordGenerator実装
-- ✅ PasswordStrengthChecker実装
-- 🔄 AddPasswordFragmentへの統合
-- 📋 Constants定義
-- 📋 ValidationUtils実装
-
-### v0.6.0 - Phase 6 (予定)
-- カスタムレイアウトXML
-- Material Design 3対応
-- アニメーション
-- ダークモード
-
-### v1.0.0 - Release (予定)
-- 包括的なテスト
-- パフォーマンス最適化
-- ドキュメント完成
-- Google Play Store公開準備
-
----
-
-[Unreleased]: https://github.com/wafukarubonara-stack/memoripass/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/wafukarubonara-stack/memoripass/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/wafukarubonara-stack/memoripass/compare/v0.6.0...v1.0.0
+[0.6.0]: https://github.com/wafukarubonara-stack/memoripass/compare/v0.5.0...v0.6.0
+[0.5.0]: https://github.com/wafukarubonara-stack/memoripass/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/wafukarubonara-stack/memoripass/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/wafukarubonara-stack/memoripass/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/wafukarubonara-stack/memoripass/compare/v0.1.0...v0.2.0
