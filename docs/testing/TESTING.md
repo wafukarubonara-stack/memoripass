@@ -632,3 +632,59 @@ jobs:
 - [Espresso](https://developer.android.com/training/testing/espresso)
 - [JUnit](https://junit.org/junit5/)
 - [Mockito](https://site.mockito.org/)
+---
+
+## Phase 6 実機テスト結果
+
+### テスト実施情報
+
+| 項目 | 内容 |
+|-----|------|
+| **実施日** | 2026年2月12日 |
+| **デバイス** | Google Pixel 9 |
+| **Android** | Android 15 (API 35) |
+| **フェーズ** | Phase 6（UI/UX改善） |
+
+### テスト結果
+
+| テストID | テスト内容 | 結果 | 実行時刻 |
+|---------|-----------|------|---------|
+| PH6-001 | パスワード追加（新UI） | ✅ 合格 | 23:20:14 |
+| PH6-002 | パスワード追加（2回目） | ✅ 合格 | 23:20:32 |
+| PH6-003 | パスワード詳細表示 | ✅ 合格 | 23:20:34 |
+| PH6-004 | パスワード詳細表示（別エントリ） | ✅ 合格 | 23:20:37 |
+| PH6-005 | パスワード編集画面遷移 | ✅ 合格 | 23:20:39 |
+| PH6-006 | パスワード編集（複数回） | ✅ 合格 | 23:21:02 |
+| PH6-007 | 詳細→編集→詳細の画面遷移 | ✅ 合格 | 23:21:15 |
+| PH6-008 | ステータスバー重なり修正確認 | ✅ 合格 | 2026-02-14 |
+
+**合格率: 8/8 (100%)** ✅
+
+### 確認されたUI変更
+
+| 画面 | 変更内容 | 確認 |
+|-----|---------|------|
+| PasswordListFragment | MaterialToolbar、FAB、MaterialCardView | ✅ |
+| AddPasswordFragment | TextInputLayout、パスワード表示切替 | ✅ |
+| PasswordDetailFragment | MaterialCardView、コピーボタン | ✅ |
+| EditPasswordFragment | TextInputLayout、既存データ表示 | ✅ |
+
+### 発見・修正したバグ
+
+| バグID | 内容 | 修正方法 | 状態 |
+|-------|------|---------|------|
+| BUG-PH6-001 | ステータスバーとの重なり（全Fragment） | fitsSystemWindows="true"追加 | ✅ 修正済み |
+| BUG-PH6-002 | 全角スペース混入（fragment_add_password.xml） | sed で半角に変換 | ✅ 修正済み |
+
+### Logcat確認事項
+
+```
+23:20:14  AddPasswordViewModel: Password saved successfully: あああ
+23:20:32  AddPasswordViewModel: Password saved successfully: かかか
+23:20:34  CryptoManager: Decryption successful
+23:20:39  EditPasswordViewModel: Loading password: ac4cef3a...
+23:21:02  CryptoManager: Decryption successful
+```
+
+**エラー: 0件 / クラッシュ: 0件**
+
