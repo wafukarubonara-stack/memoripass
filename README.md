@@ -5,6 +5,7 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Android](https://img.shields.io/badge/Platform-Android%2015+-green.svg)](https://developer.android.com)
 [![Build](https://img.shields.io/badge/Build-Passing-brightgreen.svg)](https://github.com/wafukarubonara-stack/memoripass)
+[![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](https://github.com/wafukarubonara-stack/memoripass/releases/tag/v1.0.0)
 
 Memoripassは、セキュリティとプライバシーを最優先に設計された、完全端末内完結型のパスワード管理アプリです。すべてのデータは端末内で暗号化され、外部サーバーとの通信は一切行いません。
 
@@ -25,9 +26,11 @@ Memoripassは、セキュリティとプライバシーを最優先に設計さ�
 - ✅ パスワードの追加・編集・削除
 - ✅ パスワード詳細表示とコピー
 - ✅ セキュアなパスワード生成（8〜128文字）
-- ✅ パスワード強度チェック
+- ✅ パスワード強度チェック（5段階評価）
 - ✅ カテゴリ別管理
-- ✅ 検索機能
+- ✅ リアルタイム検索
+- ✅ ダークモード対応
+- ✅ Material Design 3 UI
 - ✅ 完全オフライン動作
 
 ### 🏗️ アーキテクチャ
@@ -84,11 +87,17 @@ Google Play Storeでの公開を予定しています。
 2. 必要な情報を入力
    - **タイトル** (必須): サービス名など
    - **ユーザー名**: メールアドレスやIDなど
-   - **パスワード** (必須): 手動入力または生成
+   - **パスワード** (必須): 手動入力または「生成」ボタンで自動生成
    - **URL**: Webサイトのアドレス
    - **カテゴリ**: 分類用
    - **メモ**: 追加情報
 3. 「保存」をタップ
+
+### パスワードの検索
+
+1. 一覧画面上部の検索バーに入力
+2. タイトル・ユーザー名でリアルタイム絞り込み
+3. 入力を消すと全件表示に戻る
 
 ### パスワードの表示
 
@@ -154,7 +163,6 @@ Google Play Storeでの公開を予定しています。
 │  ┌─────────────────────────────────┐   │
 │  │ Repository                      │   │
 │  │  - PasswordRepository           │   │
-│  │  - CategoryRepository           │   │
 │  └──────────────┬──────────────────┘   │
 │                 │                       │
 │  ┌──────────────▼──────────────────┐   │
@@ -223,12 +231,13 @@ Google Play Storeでの公開を予定しています。
 
 ## 🧪 テスト
 
-### 実行済みテスト
+### 実行済みテスト（Google Pixel 9 / Android 15）
 
 - ✅ TC001: 初回起動時の生体認証
 - ✅ TC004: オートロック（30秒）
 - ✅ TC101: データベース初期化
 - ✅ TC201: パスワード一覧画面の表示
+- ✅ PH6-001〜008: Phase 6 UI/UX全テスト（8/8合格）
 
 ### テストの実行
 
@@ -246,31 +255,37 @@ Google Play Storeでの公開を予定しています。
 
 | フェーズ | 内容 | 状態 |
 |---------|------|------|
+| Phase 0 | セキュリティ基盤（暗号化・認証） | ✅ 完了 |
 | Phase 1 | データ層（Database, DAO, Repository） | ✅ 完了 |
 | Phase 2 | ドメイン層（UseCase, Domain Model） | ✅ 完了 |
 | Phase 3 | UI基礎（ViewModel, Fragment, Adapter） | ✅ 完了 |
 | Phase 4 | UI拡張（Add/Detail/Edit画面） | ✅ 完了 |
-| Phase 5 | ユーティリティ（Generator, Checker） | 🔄 進行中 |
-| Phase 6 | UI/UX改善 | 📋 予定 |
+| Phase 5 | ユーティリティ（Generator, Checker） | ✅ 完了 |
+| Phase 6 | UI/UX改善（Material Design 3） | ✅ 完了 |
+| v1.0リリース準備 | ProGuard, アイコン, CHANGELOG | ✅ 完了 |
 
 ---
 
 ## 🛣️ ロードマップ
 
-### v1.0（現在開発中）
+### v1.0.0（✅ リリース済み - 2026-02-14）
 
-- ✅ 基本的なパスワード管理機能
+- ✅ 基本的なパスワード管理機能（追加・編集・削除）
 - ✅ AES-256-GCM暗号化
-- ✅ 生体認証
-- 🔄 パスワード生成機能
-- 📋 検索機能の強化
+- ✅ 生体認証・オートロック
+- ✅ パスワード自動生成（8〜128文字）
+- ✅ パスワード強度チェック（5段階）
+- ✅ リアルタイム検索
+- ✅ Material Design 3 UI
+- ✅ ダークモード対応
+- ✅ カスタムアプリアイコン
 
 ### v1.1（予定）
 
 - カテゴリ管理UI
 - パスワード履歴
 - エクスポート/インポート（暗号化済み）
-- ダークモード
+- アニメーション・画面遷移改善
 
 ### v2.0（将来）
 
@@ -331,8 +346,6 @@ limitations under the License.
 
 プロジェクトの詳細なドキュメントは[docs/](docs/)ディレクトリに整理されています。
 
-### 主要ドキュメント
-
 | カテゴリ | ドキュメント | 内容 |
 |---------|-------------|------|
 | 📋 **プロジェクト管理** | [CHANGELOG](docs/project/CHANGELOG.md) | バージョン履歴と変更内容 |
@@ -345,12 +358,6 @@ limitations under the License.
 
 **📚 すべてのドキュメントを見る**: [docs/README.md](docs/README.md)
 
-### ドキュメントの使い方
-
-- **開発の経緯を知りたい** → [開発日誌](docs/development/DEVELOPMENT_JOURNAL.md)
-- **システム設計を理解したい** → [アーキテクチャ概要](docs/architecture/ARCHITECTURE.md)
-- **開発に参加したい** → [開発ガイド](docs/development/DEVELOPMENT.md)
-- **問題解決方法を探したい** → [開発日誌の「問題と解決」](docs/development/DEVELOPMENT_JOURNAL.md)
 ---
 
 **⚠️ 重要な注意事項**
