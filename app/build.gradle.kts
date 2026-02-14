@@ -1,5 +1,15 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     id("com.android.application")
+}
+
+// 署名設定をkeystore.propertiesから読み込む
+val keystorePropertiesFile = rootProject.file("keystore/keystore.properties")
+val keystoreProperties = Properties()
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 }
 
 android {
@@ -17,14 +27,26 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    // 署名設定
+    signingConfigs {
+        create("release") {
+            if (keystorePropertiesFile.exists()) {
+                storeFile = rootProject.file(keystoreProperties["storeFile"] as String)
+                storePassword = keystoreProperties["storePassword"] as String
+                keyAlias = keystoreProperties["keyAlias"] as String
+                keyPassword = keystoreProperties["keyPassword"] as String
+            }
+        }
     }
 
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -48,28 +70,22 @@ dependencies {
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.activity:activity:1.9.3")
     implementation("androidx.constraintlayout:constraintlayout:2.2.0")
-
     // 生体認証
     implementation("androidx.biometric:biometric:1.1.0")
-
     // セキュリティ
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
-
     // Room データベース
     implementation("androidx.room:room-runtime:2.6.1")
     annotationProcessor("androidx.room:room-compiler:2.6.1")
-
     // Lifecycle (LiveData, ViewModel)
     implementation("androidx.lifecycle:lifecycle-livedata:2.8.7")
     implementation("androidx.lifecycle:lifecycle-viewmodel:2.8.7")
-
     // テスト
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.mockito:mockito-core:5.7.0")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     androidTestImplementation("androidx.room:room-testing:2.6.1")
-
-    //FloatingActionButtonを使うため、Material Componentsが必要
+    // FloatingActionButtonを使うため、Material Componentsが必要
     implementation("com.google.android.material:material:1.11.0")
 }

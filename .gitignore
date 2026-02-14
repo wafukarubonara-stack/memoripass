@@ -81,3 +81,5 @@ test-logs/
 Compilation
 Configure
 Task
+keystore/
+keystore/keystore.properties
