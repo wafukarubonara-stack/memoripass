@@ -17,11 +17,11 @@
 package com.memoripass.ui.list;
 
 import android.os.Bundle;
-import android.view.Gravity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,25 +30,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.memoripass.R;
 import com.memoripass.data.model.PasswordEntry;
 import com.memoripass.ui.add.AddPasswordFragment;
 import com.memoripass.ui.common.BaseFragment;
 import com.memoripass.ui.detail.PasswordDetailFragment;
-import com.memoripass.R;
 
 /**
  * パスワード一覧Fragment
  *
  * <p>登録されているパスワードの一覧を表示する。</p>
- *
- * <p>機能:</p>
- * <ul>
- *   <li>パスワード一覧表示</li>
- *   <li>検索</li>
- *   <li>タップで詳細画面へ遷移</li>
- *   <li>長押しで削除確認</li>
- *   <li>FABで追加画面へ遷移</li>
- * </ul>
  *
  * @since 1.0
  */
@@ -61,20 +53,20 @@ public class PasswordListFragment extends BaseFragment {
     private RecyclerView recyclerView;
     private FloatingActionButton fab;
     private View emptyStateView;
+    private TextInputEditText searchEditText;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        // XMLレイアウトをインフレート
         View view = inflater.inflate(R.layout.fragment_password_list, container, false);
-        
-        // ビューの取得
-        recyclerView = view.findViewById(R.id.recycler_view);
-        fab = view.findViewById(R.id.fab_add);
+
+        recyclerView  = view.findViewById(R.id.recycler_view);
+        fab           = view.findViewById(R.id.fab_add);
         emptyStateView = view.findViewById(R.id.empty_state);
-        
+        searchEditText = view.findViewById(R.id.edit_search);
+
         return view;
     }
 
@@ -85,6 +77,7 @@ public class PasswordListFragment extends BaseFragment {
         setupRecyclerView();
         setupViewModel();
         setupFab();
+        setupSearch();
     }
 
     /**
@@ -95,7 +88,6 @@ public class PasswordListFragment extends BaseFragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        // アイテムクリックリスナー
         adapter.setOnItemClickListener(new PasswordListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(PasswordEntry passwordEntry) {
@@ -115,13 +107,11 @@ public class PasswordListFragment extends BaseFragment {
     private void setupViewModel() {
         viewModel = new ViewModelProvider(this).get(PasswordListViewModel.class);
 
-        // パスワード一覧を監視
         viewModel.getPasswords().observe(getViewLifecycleOwner(), passwords -> {
             adapter.setPasswords(passwords);
             viewModel.onPasswordsLoaded(passwords);
         });
 
-        // ViewStateを監視
         viewModel.getViewState().observe(getViewLifecycleOwner(), this::handleViewState);
     }
 
@@ -129,29 +119,33 @@ public class PasswordListFragment extends BaseFragment {
      * FABのセットアップ
      */
     private void setupFab() {
-        fab.setOnClickListener(v -> {
-            // パスワード追加画面へ遷移
-            navigateTo(AddPasswordFragment.newInstance());
+        fab.setOnClickListener(v -> navigateTo(AddPasswordFragment.newInstance()));
+    }
+
+    /**
+     * 検索機能のセットアップ
+     */
+    private void setupSearch() {
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override
+            public void afterTextChanged(Editable s) {
+                String query = s.toString().trim();
+                if (query.isEmpty()) {
+                    viewModel.clearSearch();
+                } else {
+                    viewModel.searchPasswords(query);
+                }
+            }
         });
     }
 
-    /**
-     * パスワードがクリックされた
-     *
-     * @param passwordEntry クリックされたパスワードエントリ
-     */
     private void onPasswordClick(PasswordEntry passwordEntry) {
-        // パスワード詳細画面へ遷移
         navigateTo(PasswordDetailFragment.newInstance(passwordEntry.getId()));
     }
 
-    /**
-     * パスワードが長押しされた
-     *
-     * @param passwordEntry 長押しされたパスワードエントリ
-     */
     private void onPasswordLongClick(PasswordEntry passwordEntry) {
-        // 削除確認ダイアログ
         new androidx.appcompat.app.AlertDialog.Builder(requireContext())
                 .setTitle("削除確認")
                 .setMessage(passwordEntry.getTitle() + " を削除しますか？")
@@ -163,11 +157,6 @@ public class PasswordListFragment extends BaseFragment {
                 .show();
     }
 
-    /**
-     * 新しいインスタンスを作成
-     *
-     * @return PasswordListFragment
-     */
     public static PasswordListFragment newInstance() {
         return new PasswordListFragment();
     }
