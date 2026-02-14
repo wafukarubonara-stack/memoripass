@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ダークモード用テキストカラー -->
+    <color name="text_primary">#E2E2E6</color>
+    <color name="text_secondary">#CAC4D0</color>
+
+    <!-- ダークモード用アウトライン -->
+    <color name="outline">#938F99</color>
+    <color name="outline_variant">#49454F</color>
+
+</resources>
