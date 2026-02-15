@@ -154,6 +154,12 @@ public class PasswordDetailFragment extends BaseFragment {
                 .getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("password", password);
         clipboard.setPrimaryClip(clip);
+        // 30秒後にクリップボードを自動クリア
+        new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+            ClipboardManager cm = (ClipboardManager) requireContext()
+                    .getSystemService(Context.CLIPBOARD_SERVICE);
+            cm.setPrimaryClip(ClipData.newPlainText("", ""));
+        }, 30_000);
 
         showMessage("パスワードをコピーしました");
     }
