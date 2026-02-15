@@ -103,3 +103,12 @@
 
 -dontwarn javax.annotation.Nullable
 -dontwarn javax.annotation.concurrent.GuardedBy
+# ============================================================
+# ログ除去（リリースビルド用）
+# ============================================================
+# Log.d, Log.v, Log.i をリリースビルドから除去
+-assumenosideeffects class android.util.Log {
+    public static int d(...);
+    public static int v(...);
+    public static int i(...);
+}
