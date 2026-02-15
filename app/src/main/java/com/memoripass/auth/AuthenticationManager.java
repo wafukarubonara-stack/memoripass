@@ -58,6 +58,8 @@ public class AuthenticationManager {
     private final Runnable autoLockRunnable;
 
     private boolean isAuthenticated = false;
+    private int authFailureCount = 0;
+    private static final int MAX_FAILURE_COUNT = 5;
     private BiometricPrompt biometricPrompt;
 
     /**
@@ -153,8 +155,14 @@ public class AuthenticationManager {
                     @Override
                     public void onAuthenticationFailed() {
                         super.onAuthenticationFailed();
-                        Log.w(TAG, "Authentication failed");
-                        callback.onAuthenticationFailed();
+                        authFailureCount++;
+                        Log.w(TAG, "Authentication failed (" + authFailureCount + "/" + MAX_FAILURE_COUNT + ")");
+                        if (authFailureCount >= MAX_FAILURE_COUNT) {
+                            authFailureCount = 0;
+                            callback.onAuthenticationError("認証の試行回数が上限に達しました。しばらく待ってから再試行してください。");
+                        } else {
+                            callback.onAuthenticationFailed();
+                        }
                     }
 
                     @Override
