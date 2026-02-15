@@ -16,6 +16,8 @@
 package com.memoripass;
 
 import android.os.Bundle;
+import com.memoripass.util.RootDetector;
+import com.memoripass.util.AuditLogger;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private AuthenticationManager authManager;
+    private RootDetector rootDetector;
+    private AuditLogger auditLogger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,25 @@ public class MainActivity extends AppCompatActivity {
 
         // 認証マネージャーの初期化
         authManager = new AuthenticationManager(this);
+
+        // root化検知・監査ログの初期化
+        rootDetector = new RootDetector(this);
+        auditLogger = new AuditLogger(this);
+
+        // アプリ起動を記録
+        auditLogger.log(AuditLogger.Action.APP_LAUNCHED, null);
+
+        // root化チェック
+        if (rootDetector.isRooted()) {
+            auditLogger.logSecurityEvent(AuditLogger.Action.ROOT_DETECTED, "Device may be rooted");
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("セキュリティ警告")
+                .setMessage("このデバイスはroot化されている可能性があります。パスワードのセキュリティが低下するリスクがあります。続行しますか？")
+                .setPositiveButton("続行", (dialog, which) -> dialog.dismiss())
+                .setNegativeButton("終了", (dialog, which) -> finish())
+                .setCancelable(false)
+                .show();
+        }
 
         // 初回起動時の認証
         if (!authManager.isAuthenticated()) {
@@ -99,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
         // バックグラウンド移行時、オートロックタイマー開始
         if (authManager.isAuthenticated()) {
             authManager.startAutoLock();
+            auditLogger.log(AuditLogger.Action.AUTO_LOCKED, null);
         }
     }
 
@@ -131,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onAuthenticationSuccess() {
                 Log.d(TAG, "Authentication successful");
+                auditLogger.logAuth(AuditLogger.Action.AUTH_SUCCESS);
                 runOnUiThread(() -> {
                     showMainContent();
                     Toast.makeText(
@@ -144,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onAuthenticationFailed() {
                 Log.w(TAG, "Authentication failed");
+                auditLogger.logAuth(AuditLogger.Action.AUTH_FAILED);
                 runOnUiThread(() -> {
                     Toast.makeText(
                             MainActivity.this,
@@ -169,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onAuthenticationCancelled() {
                 Log.d(TAG, "Authentication cancelled");
+                auditLogger.logAuth(AuditLogger.Action.AUTH_LOCKED);
                 runOnUiThread(() -> {
                     Toast.makeText(
                             MainActivity.this,
