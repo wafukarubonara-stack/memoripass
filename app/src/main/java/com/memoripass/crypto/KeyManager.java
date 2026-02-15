@@ -230,11 +230,21 @@ public class KeyManager {
             Log.d(TAG, "StrongBox not available (Android version < 9)");
             return false;
         }
-
-        // StrongBoxの可用性チェックはKeyInfoから取得
-        // 実際の実装では、鍵生成時にStrongBoxが使用されたかを確認
-        Log.d(TAG, "StrongBox support check (device-dependent)");
-        return true; // Google Pixel 9はStrongBox対応
+        try {
+            SecretKey key = getMasterKey();
+            javax.crypto.SecretKeyFactory factory = javax.crypto.SecretKeyFactory.getInstance(
+                    key.getAlgorithm(), KEYSTORE_PROVIDER);
+            android.security.keystore.KeyInfo keyInfo =
+                    (android.security.keystore.KeyInfo) factory.getKeySpec(
+                    key, android.security.keystore.KeyInfo.class);
+            boolean isStrongBox = keyInfo.getSecurityLevel() ==
+                    android.security.keystore.KeyProperties.SECURITY_LEVEL_STRONGBOX;
+            Log.d(TAG, "StrongBox backed: " + isStrongBox);
+            return isStrongBox;
+        } catch (Exception e) {
+            Log.w(TAG, "Failed to check StrongBox status", e);
+            return false;
+        }
     }
 
     /**
